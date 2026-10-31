@@ -65,15 +65,21 @@ export const companyKnowledge = [
   {
     question: "Do you ship from China to Nigeria?",
     answer:
-      "Savelanded supports shipping from China to Nigeria, with offices in Yiwu, Guangzhou, and Lagos. Share your cargo, origin, and destination for a confirmed quotation. Specific methods, pricing, and delivery dates require confirmation.",
+      "Savelanded offers sea and air freight from China to Nigeria, with offices in Yiwu, Guangzhou, and Lagos. Share your cargo, origin, and destination for a confirmed quotation. Contact our team for prices and delivery estimates.",
   },
   {
     question: "Do you offer sourcing supplier verification quality assurance?",
     answer:
-      "Savelanded connects manufacturers in China with businesses in Nigeria and publishes sourcing, supplier verification, quality assurance, and logistics coordination as part of its services. Contact the team to confirm the scope for your products.",
+      "Our services are sea freight and air freight from China to Nigeria. Contact our team for shipping enquiries.",
   },
   {
     question: "What are your business opening working hours?",
-    answer: `The website publishes general hours of ${company.hours.join("; ")}. Office hours may differ; please confirm with the office before visiting. The source does not specify a time zone.`,
+    answer: `Our general enquiry hours are ${company.hours.join("; ")}. Office hours may differ; please confirm with the office before visiting.`,
   },
 ];
+
+export const freightKnowledge = {
+  question: "Which freight services shipping methods do you offer?",
+  answer:
+    "Savelanded offers sea freight and air freight from China to Nigeria. Contact our team with your cargo details for a quotation.",
+};

@@ -7,7 +7,7 @@ The repository was initially empty. The official WordPress site became accessibl
 ## Sitemap and user journeys
 
 - `/`: hero, tracking entry, process, shipping-method enquiry cards, FAQ, quote CTA.
-- `/shipping`: distinct anchored information for sea, air, road, and rail enquiries; availability is unconfirmed.
+- `/shipping`: sea and air freight services only, as confirmed by the owner.
 - `/about`: accurate platform purpose and customer process.
 - `/quote`, `/contact`: validated enquiries, persisted reference, truthful email state.
 - `/track`: number search, recorded status, public route, method, optional delivery estimate, last update, chronological history.

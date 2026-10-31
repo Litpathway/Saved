@@ -4,11 +4,11 @@ import { Eyebrow } from "./ui";
 export function Offices() {
   return (
     <section className="offices content" id="offices">
-      <Eyebrow>Close to your next move</Eyebrow>
+      <Eyebrow>Our offices</Eyebrow>
       <h2>
         China to Nigeria.
         <br />
-        People on both sides.
+        Yiwu, Guangzhou & Lagos.
       </h2>
       <div className="office-grid">
         {company.offices.map((o) => (

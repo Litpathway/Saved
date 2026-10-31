@@ -2590,3 +2590,11 @@ textarea::placeholder {
 .admin-status h1 {
   font-size: 28px;
 }
+.freight-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 767px) {
+  .freight-grid {
+    grid-template-columns: 1fr;
+  }
+}

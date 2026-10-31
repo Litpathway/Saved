@@ -35,3 +35,7 @@ Files under `public/images/company/` preserve the downloaded originals. Next.js 
 | shipping.webp | 2026/03/79554.webp                                | Yiwu market sourcing information                                                                                                  |
 
 Contact defaults are public company information, not secrets. Existing NEXT_PUBLIC business contact overrides remain supported for the contact page's primary email/phone/WhatsApp. No environment draft, published configuration, Vercel deployment, or source WordPress site was changed by this content update.
+
+## Owner clarification
+
+The owner confirmed that Savelanded offers **sea and air freight only**. This overrides broader service wording on the old WordPress site. Road/rail freight and sourcing/supplier-check offerings are not advertised in the current site. Quote and shipment APIs validate sea/air methods; existing shipment histories are preserved. Customer-facing slogans and build/provenance commentary were simplified; privacy disclosures about automated assistance remain.

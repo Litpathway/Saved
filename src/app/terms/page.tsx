@@ -30,17 +30,14 @@ export default function Page() {
         </p>
         <h2>Content and assistance</h2>
         <p>
-          Illustrative imagery does not represent company-owned equipment,
-          offices, routes, or partners. General shipping information and
-          automated support do not replace a confirmed quotation or specific
-          advice from our team.
+          For shipment-specific information, contact our team. Automated support
+          does not replace a confirmed quotation or advice about your shipment.
         </p>
-        <h2>Launch review</h2>
+        <h2>Your shipping agreement</h2>
         <p>
-          Shipping contract terms, liability, insurance, customs
-          responsibilities, cancellation provisions, legal entity details, and
-          governing law must be supplied and legally reviewed by the company
-          before production bookings are accepted.
+          Confirm the price, shipping method, documentation, and applicable
+          terms with our team before booking. Website enquiries do not create a
+          shipping agreement.
         </p>
       </article>
     </>

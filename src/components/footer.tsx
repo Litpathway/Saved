@@ -10,7 +10,7 @@ export function Footer() {
           <p>
             China to Nigeria.
             <br />
-            Sourcing. Shipping. Support.
+            Sea freight. Air freight.
           </p>
         </div>
         <div>

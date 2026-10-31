@@ -70,3 +70,30 @@ test("shipment data requires fields and an actual date format", () => {
     false,
   );
 });
+
+test("only sea and air freight can be requested or assigned to a shipment", () => {
+  for (const method of ["Sea", "Air"]) {
+    assert.equal(enquirySchema.safeParse({ ...quote, method }).success, true);
+    assert.equal(
+      shipmentSchema.safeParse({
+        origin: "China",
+        destination: "Nigeria",
+        status: "In Transit",
+        method,
+      }).success,
+      true,
+    );
+  }
+  for (const method of ["Road", "Rail", "Sea freight or rail"]) {
+    assert.equal(enquirySchema.safeParse({ ...quote, method }).success, false);
+    assert.equal(
+      shipmentSchema.safeParse({
+        origin: "China",
+        destination: "Nigeria",
+        status: "In Transit",
+        method,
+      }).success,
+      false,
+    );
+  }
+});

@@ -11,11 +11,11 @@ export default function Page() {
     <>
       <Header />
       <section className="page-intro content">
-        <Eyebrow>Your shipment, in view</Eyebrow>
+        <Eyebrow>Shipment tracking</Eyebrow>
         <h1>
-          Every milestone.
+          Track your shipment.
           <br />
-          One simple search.
+          Enter your tracking number.
         </h1>
         <p>Find your latest recorded shipment update and follow its journey.</p>
       </section>

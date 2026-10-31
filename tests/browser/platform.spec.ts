@@ -5,6 +5,12 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { hash } from "bcryptjs";
 import { randomBytes } from "crypto";
 import AxeBuilder from "@axe-core/playwright";
+// Isolate rate-limit windows between repeated integration runs.
+test.use({
+  extraHTTPHeaders: {
+    "x-forwarded-for": "integration-" + randomBytes(8).toString("hex"),
+  },
+});
 const db = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
 });
@@ -133,7 +139,7 @@ test("owner creates shipment, update appears in public tracking and records audi
   await page
     .getByLabel("Destination", { exact: true })
     .fill("TEST Destination City");
-  await page.getByLabel("Shipping method", { exact: true }).fill("TEST Sea");
+  await page.getByLabel("Shipping method", { exact: true }).selectOption("Sea");
   await page
     .getByLabel("Public milestone note")
     .fill("Automated test registration.");
@@ -332,5 +338,36 @@ test("company contacts, office directions, and sourced images are available", as
   await page.getByRole("button", { name: "Send message", exact: true }).click();
   await expect(page.locator(".chat-message.assistant").last()).toContainText(
     "admsavelandedimpexpcomltd@gmail.com",
+  );
+});
+
+test("customers can choose only sea or air freight", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator(".mode-pills button")).toHaveText(["Sea", "Air"]);
+  await page.goto("/shipping");
+  await expect(
+    page.getByRole("heading", { name: "Sea freight", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Air freight", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: /Road freight|Rail freight|Supplier verification/,
+    }),
+  ).toHaveCount(0);
+  await page.goto("/quote");
+  await expect(page.locator("select[name=method] option")).toHaveText([
+    "Help me choose",
+    "Sea",
+    "Air",
+  ]);
+  await page.getByRole("button", { name: "Open support chat" }).click();
+  await page
+    .getByLabel("Your support message")
+    .fill("Do you offer rail freight?");
+  await page.getByRole("button", { name: "Send message", exact: true }).click();
+  await expect(page.locator(".chat-message.assistant").last()).toContainText(
+    "sea freight and air freight",
   );
 });

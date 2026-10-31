@@ -278,13 +278,15 @@ export function AdminDashboard({ role }: { role: string }) {
                   </label>
                   <label>
                     Shipping method
-                    <input
+                    <select
                       name="method"
+                      aria-label="Shipping method"
+                      defaultValue={edit?.method ?? "Sea"}
                       required
-                      maxLength={60}
-                      defaultValue={edit?.method}
-                      placeholder="Confirmed shipping method"
-                    />
+                    >
+                      <option value="Sea">Sea</option>
+                      <option value="Air">Air</option>
+                    </select>
                   </label>
                   <label>
                     Status

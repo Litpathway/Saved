@@ -5,16 +5,16 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.savelandedcompany.com"),
   title: {
-    default: "Savelanded Company | Shipping, made clearer",
+    default: "Savelanded Company | China–Nigeria Sea & Air Freight",
     template: "%s | Savelanded Company",
   },
   description:
-    "China–Nigeria shipping, sourcing, supplier verification, and logistics coordination. Contact Savelanded in Yiwu, Guangzhou, and Lagos.",
+    "Sea and air freight from China to Nigeria. Contact Savelanded in Yiwu, Guangzhou, and Lagos.",
   robots: { index: true, follow: true },
   openGraph: {
     title: "Savelanded Company",
-    description: "Shipping, made clearer. Every step of the way.",
-    images: ["/images/company/sea.jpg"],
+    description: "China–Nigeria Sea & Air Freight. ",
+    images: ["/images/company/warehouse.jpg"],
   },
 };
 export default function RootLayout({

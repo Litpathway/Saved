@@ -7,11 +7,11 @@ export default function Page() {
     <>
       <Header />
       <section className="page-intro content">
-        <Eyebrow>Your next move</Eyebrow>
+        <Eyebrow>Shipping quotation</Eyebrow>
         <h1>
-          Let’s talk
+          Request a quote
           <br />
-          about your cargo.
+          for sea or air freight.
         </h1>
         <p>
           Tell us what you have in mind. Our team will review your requirements
@@ -22,8 +22,9 @@ export default function Page() {
         <aside>
           <span className="big-number">01 /</span>
           <h2>
-            A little detail.
-            <br />A better starting point.
+            Shipment details.
+            <br />
+            Accurate pricing.
           </h2>
           <p>
             Have the origin, destination, and cargo details ready. Weight and

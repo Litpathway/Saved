@@ -84,8 +84,6 @@ export function EnquiryForm({ kind }: { kind: "QUOTE" | "CONTACT" }) {
                 <option value="Not sure">Help me choose</option>
                 <option>Sea</option>
                 <option>Air</option>
-                <option>Road</option>
-                <option>Rail</option>
               </select>
             </label>
             <label>

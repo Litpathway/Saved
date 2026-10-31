@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { companyKnowledge } from "@/lib/company";
+import { companyKnowledge, freightKnowledge } from "@/lib/company";
 import { approvedKnowledge, statusKnowledge } from "@/lib/knowledge";
 import { error, identity, limit, sameOrigin } from "@/lib/security";
 export async function POST(req: Request) {
@@ -27,11 +27,30 @@ export async function POST(req: Request) {
         mode: "tracking",
       });
     }
+    if (
+      /\b(road|rail|railway|train|sea|air|freight|shipping methods|sourcing|supplier|quality assurance)\b/i.test(
+        message,
+      )
+    ) {
+      return Response.json({
+        reply: freightKnowledge.answer,
+        mode: "knowledge",
+      });
+    }
     const entries = await db.knowledge.findMany({
       where: { published: true },
       select: { question: true, answer: true },
     });
-    const knowledge = [...approvedKnowledge, ...statusKnowledge, ...entries];
+    const knowledge = [
+      ...approvedKnowledge,
+      ...statusKnowledge,
+      ...entries.filter(
+        (entry) =>
+          !/\b(road|rail|railway|sourcing|supplier verification|quality assurance)\b/i.test(
+            entry.question + " " + entry.answer,
+          ),
+      ),
+    ];
     if (!process.env.LLM_API_KEY) {
       const query = message.toLowerCase();
       const companyAnswer = /email|whatsapp|phone|telephone/.test(query)
@@ -91,7 +110,7 @@ export async function POST(req: Request) {
         reply:
           index >= 0
             ? approvedKnowledge[index].answer
-            : "I can help with tracking, quote requests, and the shipping process. I cannot verify specific routes or company policies here. Please contact our team for a confirmed answer.",
+            : "I can help with tracking and quote requests. For rates or other shipping questions, please contact our team.",
         mode: "knowledge",
       });
     }
@@ -130,7 +149,7 @@ export async function POST(req: Request) {
       reply:
         selected.success && selected.data.answerIndex >= 0
           ? knowledge[selected.data.answerIndex].answer
-          : "I cannot verify an answer from our approved information. Please contact our team for help.",
+          : "Please contact our team so we can answer your question.",
       mode: "ai",
     });
   } catch {

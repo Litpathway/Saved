@@ -14,12 +14,13 @@ export default function Page() {
       <section className="page-intro content">
         <Eyebrow>Here to help</Eyebrow>
         <h1>
-          A conversation.
-          <br />A clearer way forward.
+          Contact Savelanded.
+          <br />
+          China & Nigeria.
         </h1>
         <p>
-          Connect with our team in China and Nigeria for shipping, sourcing, and
-          shipment support.
+          Connect with our team in China and Nigeria for sea and air freight
+          enquiries.
         </p>
       </section>
       <section className="form-layout content">

@@ -40,12 +40,6 @@ export default function Page() {
           applicable legal requirements. Include your enquiry reference where
           possible, without including sensitive documents.
         </p>
-        <h2>Before production launch</h2>
-        <p>
-          The company must confirm its legal entity details, privacy contact,
-          retention schedule, service providers, and any jurisdiction-specific
-          requirements before accepting production customer data.
-        </p>
       </article>
     </>
   );

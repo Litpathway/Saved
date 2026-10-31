@@ -11,13 +11,12 @@ export default function Page() {
       <section className="page-intro content">
         <Eyebrow>About Savelanded</Eyebrow>
         <h1>
-          Connecting China.
+          About Savelanded.
           <br />
-          Supporting Nigerian business.
+          China–Nigeria shipping.
         </h1>
         <p>
-          {company.name} connects manufacturers in China with businesses across
-          Nigeria.
+          {company.name} provides sea and air freight from China to Nigeria.
         </p>
       </section>
       <section className="about-grid content">
@@ -30,22 +29,21 @@ export default function Page() {
           />
         </div>
         <div>
-          <Eyebrow>From sourcing to shipping</Eyebrow>
+          <Eyebrow>Sea & air freight</Eyebrow>
           <h2>
-            Trade with clarity.
+            Import and export.
             <br />
-            Move with confidence.
+            Sea and air freight.
           </h2>
           <p className="section-copy">
-            Our work brings together sourcing, supplier verification, quality
-            assurance, and logistics coordination. With offices in Yiwu,
-            Guangzhou, and Lagos, we help customers discuss their requirements
-            with a team on both sides of the journey.
+            We ship cargo from China to Nigeria by sea and air. Our offices in
+            Yiwu, Guangzhou, and Lagos handle shipping enquiries and help
+            customers arrange their shipments.
           </p>
           <p className="section-copy">
-            Professionalism, integrity, and clear communication guide our
-            approach. Contact us to confirm service scope, pricing, and timing
-            for your next shipment.
+            Send us the cargo description, weight, and destination for a
+            quotation. Our team will confirm pricing, documents, and shipping
+            arrangements before you book.
           </p>
           <ArrowLink href="/contact" dark>
             Talk to our team

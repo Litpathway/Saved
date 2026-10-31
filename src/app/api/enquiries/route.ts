@@ -39,7 +39,7 @@ export async function POST(req: Request) {
         reference: row.id,
         message: delivery.configured
           ? "Your request is saved. Email confirmation is being processed."
-          : "Your request is saved. Keep this reference; email confirmation is not configured yet.",
+          : "Your request is saved. Please keep this reference number for any follow-up.",
       },
       { status: 201 },
     );

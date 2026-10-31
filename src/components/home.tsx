@@ -8,13 +8,10 @@ import {
   ArrowUpRight,
   Ship,
   Plane,
-  Truck,
-  TrainFront,
   ScanLine,
   MessagesSquare,
   ClipboardList,
   Route,
-  ShieldCheck,
   Plus,
   Minus,
   PackageCheck,
@@ -26,52 +23,34 @@ const modes = [
   {
     name: "Sea",
     icon: Ship,
-    description: "For larger cargo",
+    description: "Shipping by sea",
     detail: "Discuss container and cargo requirements with our team.",
   },
   {
     name: "Air",
     icon: Plane,
-    description: "When timing matters",
+    description: "Shipping by air",
     detail: "Ask about availability for your origin and destination.",
-  },
-  {
-    name: "Road",
-    icon: Truck,
-    description: "Connecting the journey",
-    detail: "Discuss collection and final delivery requirements.",
-  },
-  {
-    name: "Rail",
-    icon: TrainFront,
-    description: "An alternative to explore",
-    detail: "Our team can confirm whether this suits your route.",
   },
 ];
 const services = [
   {
-    name: "Sourcing",
+    name: "Sea freight",
     icon: Ship,
-    description: "Find the right products",
-    detail: "Discuss sourcing from Yiwu and Guangzhou with our team.",
-    image: "/images/company/shipping.webp",
-    anchor: "sourcing",
-  },
-  {
-    name: "Supplier verification",
-    icon: ShieldCheck,
-    description: "Start with more clarity",
-    detail: "Confirm supplier-verification and quality-assurance requirements.",
-    image: "/images/company/yiwu.jpg",
-    anchor: "supplier-verification",
-  },
-  {
-    name: "Logistics coordination",
-    icon: Truck,
-    description: "Bring it all together",
-    detail: "Arrange shipping from China to Nigeria around your cargo needs.",
+    description: "Sea freight",
+    detail:
+      "Shipping from China to Nigeria. Send your cargo weight and volume for a quote.",
     image: "/images/company/warehouse.jpg",
-    anchor: "logistics",
+    anchor: "sea",
+  },
+  {
+    name: "Air freight",
+    icon: Plane,
+    description: "Air freight",
+    detail:
+      "Air shipping from China to Nigeria. Contact our team for rates and shipping arrangements.",
+    image: "/images/company/guangzhou.jpg",
+    anchor: "air",
   },
 ];
 const steps = [
@@ -107,7 +86,7 @@ const faqs = [
   ],
   [
     "Which destinations and services are available?",
-    "We support shipping from China to Nigeria, with offices in Yiwu, Guangzhou, and Lagos. We also assist with sourcing, supplier verification, quality assurance, and logistics coordination. Confirm specific methods and delivery arrangements with our team.",
+    "We offer sea and air freight from China to Nigeria, with offices in Yiwu, Guangzhou, and Lagos. Confirm specific methods and delivery arrangements with our team.",
   ],
   [
     "When will my shipment arrive?",
@@ -132,8 +111,8 @@ export function Home() {
     <>
       <section className="hero">
         <Image
-          src="/images/company/sea.jpg"
-          alt="Container ship and cargo truck image published on Savelanded’s website"
+          src="/images/company/warehouse.jpg"
+          alt="Cargo loading at Savelanded"
           fill
           priority
           sizes="(max-width: 768px) 100vw, 1260px"
@@ -143,17 +122,17 @@ export function Home() {
         <Header hero />
         <div className="hero-copy">
           <span className="hero-kicker">
-            <span /> YOUR CARGO. OUR COMMITMENT.
+            <span /> SAVELANDED IMPORT & EXPORT
           </span>
           <h1>
             From China to Nigeria.
             <br />
-            With you at every step.
+            Sea and air freight.
           </h1>
           <p>
-            Sourcing, supplier verification, and shipping support.
-            <br className="desktop" /> Connecting your business with
-            possibilities in China.
+            Ship with Savelanded from China to Nigeria.
+            <br className="desktop" /> Contact our offices in Yiwu, Guangzhou,
+            or Lagos.
           </p>
           <ArrowLink href="/quote">Get a shipping quote</ArrowLink>
           <Link className="hero-track-link" href="/track">
@@ -162,7 +141,7 @@ export function Home() {
         </div>
         <div className="route-area">
           <div className="route-caption">
-            YOUR NEXT MOVE STARTS HERE <span>01 — 04</span>
+            FREIGHT SERVICES <span>01 — 02</span>
           </div>
           <div
             className="route-slider"
@@ -189,11 +168,11 @@ export function Home() {
                   <m.icon size={44} />
                 </div>
                 <div>
-                  <span className="tiny">EXPLORE THE POSSIBILITIES</span>
+                  <span className="tiny">CHINA TO NIGERIA</span>
                   <h3>{m.name} freight</h3>
                   <p>{m.description}</p>
                   <span className="route-more">
-                    Check availability <ArrowUpRight size={14} />
+                    View service <ArrowUpRight size={14} />
                   </span>
                 </div>
               </Link>
@@ -217,7 +196,7 @@ export function Home() {
               </button>
             ))}
           </div>
-          <span className="hero-note">Illustrative shipping scene</span>
+
           <div className="slider-controls">
             <button
               aria-label="Previous shipping option"
@@ -264,29 +243,26 @@ export function Home() {
           </button>
         </form>
       </section>
-      <section
-        className="trust-grid content"
-        aria-label="A clearer shipping experience"
-      >
+      <section className="trust-grid content" aria-label="Shipping support">
         {[
           {
             icon: MessagesSquare,
-            title: "People you can talk to",
+            title: "China & Nigeria offices",
             text: "A direct line to your shipping questions.",
           },
           {
             icon: ScanLine,
-            title: "Visibility at every step",
+            title: "Shipment tracking",
             text: "Recorded updates, easy to find.",
           },
           {
             icon: ClipboardList,
-            title: "Clarity from the start",
+            title: "Shipping quotes",
             text: "Discuss your requirements before booking.",
           },
           {
             icon: Route,
-            title: "A coordinated journey",
+            title: "Shipping support",
             text: "Stay informed from request to delivery.",
           },
         ].map((f) => (
@@ -305,13 +281,12 @@ export function Home() {
         <div>
           <Eyebrow>Our process</Eyebrow>
           <h2>
-            Good logistics.
+            How to ship
             <br />
-            Clear from the start.
+            with Savelanded.
           </h2>
           <p className="section-copy">
-            Big plans start with simple steps. Here’s how to get your next
-            shipment moving with Savelanded.
+            Request a quote, confirm the shipping details, and track your cargo.
           </p>
           <div className="process-visual">
             <Image
@@ -325,12 +300,12 @@ export function Home() {
                 <PackageCheck size={26} />
               </span>
               <h3>
-                Every milestone.
+                Shipment updates.
                 <br />
-                One place.
+                Track online.
               </h3>
               <p>
-                Follow the updates that matter with your unique tracking number.
+                Enter your tracking number to see the latest recorded update.
               </p>
               <Link href="/track">
                 Track your cargo <ArrowUpRight size={17} />
@@ -367,19 +342,20 @@ export function Home() {
       <section className="showcase" id="shipping">
         <div className="showcase-heading">
           <div>
-            <Eyebrow>Sourcing, shipping & support</Eyebrow>
+            <Eyebrow>Our freight services</Eyebrow>
             <h2>
-              Different cargo.
+              Importing from China?
               <br />
-              The right conversation.
+              We can help.
             </h2>
             <p>
-              Explore your options. Let’s confirm what works for your shipment.
+              Contact our offices in Yiwu, Guangzhou, or Lagos for sea and air
+              freight enquiries.
             </p>
           </div>
           <ArrowLink href="/shipping">Explore shipping</ArrowLink>
         </div>
-        <div className="shipping-grid">
+        <div className="shipping-grid freight-grid">
           {services.map((m, i) => (
             <article
               key={m.name}
@@ -414,25 +390,26 @@ export function Home() {
       <Offices />
       <section className="journey-strip content">
         <span>
-          FROM A QUESTION
+          SEA & AIR FREIGHT
           <br />
-          <strong>TO YOUR NEXT SHIPMENT.</strong>
+          <strong>CHINA TO NIGERIA</strong>
         </span>
         <p>
-          A little detail now.
-          <br />A clearer journey ahead.
+          Tell us what you’re shipping.
+          <br />
+          Get a quote from our team.
         </p>
         <ArrowLink href="/quote" dark>
-          Let’s get started
+          Request a quote
         </ArrowLink>
       </section>
       <section className="faq content" id="faq">
         <div>
-          <Eyebrow>A little more clarity</Eyebrow>
+          <Eyebrow>Shipping FAQs</Eyebrow>
           <h2>
-            Your questions.
+            Frequently asked
             <br />
-            Answered.
+            questions.
           </h2>
           <p className="section-copy">
             Need something more specific?
@@ -460,11 +437,11 @@ export function Home() {
         </div>
       </section>
       <section className="closing content">
-        <span>LET’S MOVE FORWARD</span>
+        <span>GET A QUOTE</span>
         <h2>
-          Your next shipment
+          Send us your
           <br />
-          starts with a hello.
+          shipping requirements.
         </h2>
         <ArrowLink href="/quote">Get a shipping quote</ArrowLink>
       </section>

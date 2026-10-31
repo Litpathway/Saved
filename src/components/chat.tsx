@@ -14,7 +14,6 @@ export function Chat() {
   ]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
-  const [mode, setMode] = useState("");
   const end = useRef<HTMLDivElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -32,7 +31,6 @@ export function Chat() {
         body: JSON.stringify({ message: text }),
       });
       const data = await r.json();
-      setMode(data.mode ?? "");
       setMessages((m) => [
         ...m,
         { role: "assistant", content: data.reply ?? data.error },
@@ -70,7 +68,7 @@ export function Chat() {
             </span>
             <div>
               <strong>Savelanded support</strong>
-              <span>Shipping questions, made simpler</span>
+              <span>Sea & air freight enquiries</span>
             </div>
             <button
               aria-label="Close support chat"
@@ -104,15 +102,13 @@ export function Chat() {
             )}
             {busy && (
               <p className="typing">
-                Preparing a response<span>…</span>
+                Replying<span>…</span>
               </p>
             )}
             <div ref={end} />
           </div>
           <div className="chat-disclosure">
-            {mode === "ai"
-              ? "AI-assisted response. Verify important details with our team."
-              : "Approved information · No live GPS tracking"}
+            Automated shipping assistant. Contact our team for booking details.
             <br />
             Avoid personal, payment, or sensitive information.
           </div>
@@ -155,7 +151,7 @@ export function Chat() {
         ) : (
           <>
             <MessageCircle size={22} />
-            <span>Let’s talk</span>
+            <span>Support</span>
           </>
         )}
       </button>
