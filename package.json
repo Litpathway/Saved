@@ -11,7 +11,8 @@
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
-    "test:admin-runtime": "tsx --test tests/admin-runtime.integration.ts"
+    "test:admin-runtime": "tsx --test tests/admin-runtime.integration.ts",
+    "test:prisma-tracing": "tsx --test tests/prisma-tracing.integration.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^6.19.3",

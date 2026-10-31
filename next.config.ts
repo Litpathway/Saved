@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
   poweredByHeader: false,
+  // Prisma's JS engine loads this WASM file dynamically, beyond Next's import tracing.
+  outputFileTracingIncludes: {
+    "/**": ["./node_modules/.prisma/client/query_compiler_bg.wasm"],
+  },
   async headers() {
     return [
       {
