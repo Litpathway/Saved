@@ -50,3 +50,20 @@ test("admin failure references never expose raw connection details", () => {
   );
   assert.equal(adminFailureReference({ code: "P1000" }), "DB-AUTH");
 });
+
+test("provider failure descriptions are classified without being disclosed", () => {
+  assert.equal(
+    adminFailureReference({ message: "private DB: Tenant or user not found" }),
+    "DB-POOLER-USER",
+  );
+  assert.equal(
+    adminFailureReference({
+      message: "private host: self-signed certificate in certificate chain",
+    }),
+    "DB-TLS",
+  );
+  assert.equal(
+    adminFailureReference({ message: "ENOENT private/file/query.wasm" }),
+    "DB-CLIENT",
+  );
+});
