@@ -2552,3 +2552,41 @@ textarea::placeholder {
     max-width: 100%;
   }
 }
+.admin-status > svg {
+  display: block;
+  color: var(--deep);
+  margin-bottom: 20px;
+}
+.admin-status > p {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.admin-status .aside-note h2 {
+  font-size: 18px;
+  letter-spacing: -0.4px;
+}
+.admin-status .aside-note p,
+.admin-status li {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.admin-status code {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.admin-status-actions {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 25px;
+}
+.admin-status-actions .pill {
+  width: auto;
+}
+.admin-status .eyebrow {
+  font-size: 10px;
+}
+.admin-status h1 {
+  font-size: 28px;
+}

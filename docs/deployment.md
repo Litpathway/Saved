@@ -27,3 +27,17 @@ The onboarding machine uses an isolated local PostgreSQL container and generated
 ## Cloud runtime startup
 
 Use the existing `/workspace/Saved` checkout, without a worktree. Run `npm ci` if dependencies are missing; set local environment securely; start the configured database; `npx prisma generate && npm run db:migrate`; start `npm run dev` or the tested production server. Processes do not survive snapshots. A running port alone is not readiness: request the homepage and run the dedicated test database workflows. Never run destructive/reset commands or browser seed tests against production.
+
+## Fixing the Vercel admin server exception
+
+If `/admin` crashes and `/api/auth/providers` reports a server configuration error, first inspect Vercel's private runtime logs. The same failure is reproducible when NEXTAUTH_SECRET is absent: NextAuth throws `NO_SECRET` during server rendering. The admin pages now render a safe setup screen when required configuration or the first account is missing, and a recovery screen if database access fails. They never generate a fallback secret, provision a public administrator, or bypass authentication.
+
+For `https://saved-one.vercel.app`, open that Vercel project's Settings → Environment Variables and set **Production** values for:
+
+- NEXTAUTH_SECRET: generate a strong random value locally, e.g. `openssl rand -base64 48`. Store it securely, never in Git or chat.
+- DATABASE_URL: an authenticated managed PostgreSQL connection string with the provider's required TLS settings. A localhost URL from development cannot work on Vercel.
+- NEXTAUTH_URL: `https://saved-one.vercel.app` (change this when the canonical custom domain is activated).
+
+Redeploy after environment changes. Run `npm run db:migrate` using a direct/session connection to the same production database, then securely set ADMIN_SETUP_EMAIL and ADMIN_SETUP_PASSWORD in an operator shell and run `npm run admin:create`. The password must have 14+ characters. Do not deploy the ADMIN_SETUP_PASSWORD as a public variable or use a default password. Remove the setup variables from that shell afterwards. The database is never populated with a production user automatically.
+
+Verify `/admin/login` displays sign-in, correct credentials open the dashboard, incorrect credentials remain rejected, and anonymous `/api/admin` access returns 401. A setup screen is a safe failure state, not proof that production credentials and migrations are complete.

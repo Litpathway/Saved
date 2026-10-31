@@ -20,6 +20,7 @@ Visit `/admin` to sign in and create a shipment. Tracking numbers are generated 
 - `npm test`: server input validation and tracking format checks.
 - `npm run typecheck`: TypeScript.
 - `npm run build`: production compilation and static generation.
+- `npm run test:admin-runtime` (after building): production-mode checks for missing authentication configuration and database outages.
 - Start the app, then `npx playwright install chromium && npm run test:e2e`: PostgreSQL-backed browser workflows, responsive layouts, access controls, tracking, enquiry persistence, and chatbot fallback. Use a **dedicated test database**. Tests create temporary users and records, then remove them. Never run these tests against customer data.
 - If Chromium is already installed, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium`.
 - `npm audit --omit=dev --audit-level=high`.
@@ -43,3 +44,5 @@ Set `RESEND_API_KEY`, a verified `EMAIL_FROM`, and `ADMIN_EMAIL`. Enquiry and em
 ## Database migrations
 
 `prisma/schema.prisma` is the ORM source. SQL lives in `prisma/migrations`. Prisma's JS driver avoids native binary downloads. The Prisma 6 WASM migration engine encountered an unsupported PostgreSQL `name` type during validation; `scripts/migrate.ts` applies the generated SQL with transactions, SHA-256 drift checking, and a PostgreSQL advisory lock instead. Use `npm run db:migrate` consistently; do not mix this migration ledger with Prisma Migrate's ledger. To generate a subsequent migration, use `prisma migrate diff` with the previous schema and new schema in a development environment, review the SQL, and add an ordered migration directory. Never edit an already applied migration. Back up and stage changes before production.
+
+If Vercel shows a server-side exception on `/admin`, see [admin configuration troubleshooting](docs/deployment.md#fixing-the-vercel-admin-server-exception). The login and dashboard now render safe setup/recovery states instead of throwing when configuration is incomplete. Production still requires a hosted database, `NEXTAUTH_SECRET`, migrations, and a securely provisioned administrator.

@@ -4,6 +4,10 @@ const globalDb = globalThis as unknown as { prisma?: PrismaClient };
 export const db =
   globalDb.prisma ??
   new PrismaClient({
-    adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
+    adapter: new PrismaPg({
+      connectionString: process.env.DATABASE_URL,
+      connectionTimeoutMillis: 5000,
+      max: 5,
+    }),
   });
 if (process.env.NODE_ENV !== "production") globalDb.prisma = db;

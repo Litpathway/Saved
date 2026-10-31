@@ -18,7 +18,7 @@ export function AdminLogin() {
         password: data.get("password"),
         redirect: false,
       });
-      if (result?.error)
+      if (!result || !result.ok || result.error)
         setError(
           "Unable to sign in. Check your credentials or try again later.",
         );

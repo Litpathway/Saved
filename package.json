@@ -10,7 +10,8 @@
     "admin:create": "tsx scripts/create-admin.ts",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:admin-runtime": "tsx --test tests/admin-runtime.integration.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^6.19.3",
