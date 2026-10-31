@@ -1,10 +1,11 @@
+import { databaseConnectionOptions } from "../src/lib/database-config";
 import "dotenv/config";
 import { Client } from "pg";
 import { readdir, readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import path from "node:path";
 // Apply reviewed Prisma-generated SQL without requiring a native schema engine.
-const client = new Client({ connectionString: process.env.DATABASE_URL });
+const client = new Client(databaseConnectionOptions());
 async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
   await client.connect();

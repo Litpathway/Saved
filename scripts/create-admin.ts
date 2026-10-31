@@ -1,9 +1,10 @@
+import { databaseConnectionOptions } from "../src/lib/database-config";
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hash } from "bcryptjs";
 const db = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
+  adapter: new PrismaPg(databaseConnectionOptions()),
 });
 async function main() {
   const email = process.env.ADMIN_SETUP_EMAIL?.trim().toLowerCase();
