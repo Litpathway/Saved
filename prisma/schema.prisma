@@ -1,0 +1,85 @@
+generator client {
+ provider = "prisma-client-js"
+ engineType = "client"
+}
+datasource db {
+ provider = "postgresql"
+ url = env("DATABASE_URL")
+}
+model Admin {
+ id String @id @default(cuid())
+ email String @unique
+ passwordHash String
+ role String @default("EDITOR")
+ createdAt DateTime @default(now())
+}
+model ShippingStatus {
+ id String @id @default(cuid())
+ name String @unique
+ order Int @default(0)
+}
+model Shipment {
+ id String @id @default(cuid())
+ trackingNumber String @unique
+ origin String
+ destination String
+ method String
+ status String
+ estimatedDelivery DateTime?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ milestones Milestone[]
+}
+model Milestone {
+ id String @id @default(cuid())
+ shipmentId String
+ shipment Shipment @relation(fields:[shipmentId], references:[id], onDelete:Cascade)
+ status String
+ note String @default("")
+ occurredAt DateTime @default(now())
+}
+model Enquiry {
+ id String @id @default(cuid())
+ kind String
+ name String
+ email String
+ phone String @default("")
+ origin String @default("")
+ destination String @default("")
+ method String @default("")
+ cargo String @default("")
+ weight String @default("")
+ dimensions String @default("")
+ message String
+ status String @default("NEW")
+ createdAt DateTime @default(now())
+}
+model Knowledge {
+ id String @id @default(cuid())
+ question String
+ answer String
+ published Boolean @default(false)
+ updatedAt DateTime @updatedAt
+}
+model AuditLog {
+ id String @id @default(cuid())
+ actor String
+ action String
+ entityId String
+ createdAt DateTime @default(now())
+}
+model RateLimit {
+ key String @id
+ count Int
+ resetAt DateTime
+}
+model EmailJob {
+ id String @id @default(cuid())
+ enquiryId String
+ recipient String
+ subject String
+ text String
+ sentAt DateTime?
+ attempts Int @default(0)
+ createdAt DateTime @default(now())
+}
