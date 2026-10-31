@@ -20,6 +20,7 @@ Visit `/admin` to sign in and create a shipment. Tracking numbers are generated 
 - `npm test`: server input validation and tracking format checks.
 - `npm run typecheck`: TypeScript.
 - `npm run build`: production compilation and static generation.
+- `npm run test:prisma-tracing` (after building): checks that serverless database routes include Prisma’s dynamically loaded WASM compiler.
 - `npm run test:admin-runtime` (after building): production-mode checks for missing authentication configuration and database outages.
 - Start the app, then `npx playwright install chromium && npm run test:e2e`: PostgreSQL-backed browser workflows, responsive layouts, access controls, tracking, enquiry persistence, and chatbot fallback. Use a **dedicated test database**. Tests create temporary users and records, then remove them. Never run these tests against customer data.
 - If Chromium is already installed, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium`.

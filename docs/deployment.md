@@ -49,3 +49,18 @@ The Supabase project **Saved** (`hpmciuedonhshxstjcgk`, eu-north-1) was prepared
 Production connection details and a newly generated session secret are stored locally in the ignored, owner-readable `.env.production.savelanded` file for the deployment operation. Do not commit, print, or reuse these credentials in a preview environment. The connection uses the Supabase session pooler with TLS verification. The main Supabase database password was not rotated. Future migrations require a privileged operator connection or the Supabase management API; the application login intentionally cannot run schema migrations.
 
 At preparation time, Vercel authentication and initial administrator credentials were still unavailable. Table grants and RLS policies were verified through read-only management queries. A connection from the Vercel runtime and production admin sign-in must still be tested after configuration is deployed; prepared schema alone does not establish a working live dashboard. Provision an administrator only after a secure email/password has been supplied through protected configuration.
+
+## Production connection verified — 31 October 2026
+
+The Supabase database is connected to the Vercel project `saved` at `https://saved-one.vercel.app`. Production has encrypted DATABASE_URL and NEXTAUTH_SECRET bindings, NEXTAUTH_URL set to that origin, and DATABASE_SSL_CA configured with Supabase's public CA. The initial OWNER account was provisioned using the owner's confirmed email and a bcrypt hash of the password supplied through protected configuration. Account passwords and Supabase/Vercel management tokens were not added to Vercel application variables or Git.
+
+Live verification passed for: sign-in page HTTP 200, anonymous admin API HTTP 401, credentials sign-in, OWNER session, authenticated admin API/database queries HTTP 200, dashboard rendering HTTP 200, and sign-out followed by HTTP 401. No demonstration shipments or customer enquiries were inserted.
+
+Two deployment requirements were confirmed and fixed:
+
+- Next.js serverless tracing must include `node_modules/.prisma/client/query_compiler_bg.wasm`. `outputFileTracingIncludes` retains it, and `npm run test:prisma-tracing` checks the real build manifests in CI.
+- Supabase's certificate chain needs its public root CA. `databaseConnectionOptions` adds DATABASE_SSL_CA to Node's standard trusted roots and keeps `rejectUnauthorized: true`. It removes URL SSL parameters that would replace the explicit CA options. Runtime, provisioning, and migration commands share this configuration. Never disable certificate verification to work around trust errors.
+
+The public CA was retrieved over verified HTTPS from `https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt`, as described by Supabase's SSL enforcement documentation. Its subject is Supabase Root 2021 CA, valid through 26 April 2031, with SHA-256 fingerprint `807025AD50D4ED219D2C9C7D299C004F824EB00CF7F65AFEF607D07B72E6CAFA`. Review the provider's current CA guidance when rotating certificates.
+
+Custom-domain DNS, external email delivery, and paid AI provider responses remain separate configuration tasks and were not established by the admin login checks.
