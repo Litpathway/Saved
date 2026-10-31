@@ -2428,3 +2428,127 @@ textarea::placeholder {
 .slider-controls button {
   color: var(--ink);
 }
+/* Company-published identity and contact details. */
+.brand-art {
+  object-fit: contain;
+  border-radius: 7px;
+  flex-shrink: 0;
+  background: #000;
+}
+.contact-email {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+}
+.company-contacts {
+  display: grid;
+  gap: 18px;
+  margin: 24px 0;
+}
+.company-contacts strong,
+.company-contacts span,
+.company-contacts a {
+  display: block;
+  font-size: 12px;
+}
+.company-contacts span {
+  font-size: 10px;
+  color: var(--muted);
+  margin: 3px 0;
+}
+.company-contacts a {
+  width: max-content;
+  border-bottom: 1px solid var(--line);
+}
+.business-hours {
+  margin-top: 30px;
+}
+.business-hours h3 {
+  font-size: 17px;
+}
+.business-hours p {
+  margin-bottom: 5px;
+}
+.offices,
+.company-leadership {
+  margin-top: 65px;
+  margin-bottom: 70px;
+}
+.office-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.office-grid article {
+  background: var(--soft);
+  padding: 26px;
+  border-radius: 18px;
+  min-width: 0;
+}
+.office-grid .tiny {
+  font-size: 9px;
+  color: var(--deep);
+  letter-spacing: 1px;
+}
+.office-grid h3 {
+  font-size: 25px;
+  margin: 15px 0;
+}
+.office-grid p {
+  font-size: 12px;
+  line-height: 1.9;
+}
+.office-grid a {
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #aaa;
+  padding-bottom: 4px;
+}
+.company-leadership h3 {
+  font-size: 18px;
+  line-height: 1.5;
+}
+.footer-bottom > span {
+  max-width: 75%;
+}
+@media (max-width: 1023px) {
+  .office-grid {
+    gap: 15px;
+  }
+  .office-grid article {
+    padding: 20px;
+  }
+}
+@media (max-width: 767px) {
+  .brand-art {
+    width: 48px;
+    height: 32px;
+  }
+  .office-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .offices,
+  .company-leadership {
+    margin-top: 45px;
+    margin-bottom: 45px;
+  }
+  .offices h2 {
+    font-size: 31px;
+  }
+  .office-grid h3 {
+    font-size: 23px;
+  }
+  .footer-top > div:last-child {
+    display: block;
+    grid-column: 1/-1;
+  }
+  .footer-bottom {
+    flex-direction: column;
+  }
+  .footer-bottom > span {
+    max-width: 100%;
+  }
+}

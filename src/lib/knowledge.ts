@@ -1,3 +1,4 @@
+import { companyKnowledge } from "./company";
 export const approvedKnowledge = [
   {
     question: "How can I track my shipment?",
@@ -24,6 +25,7 @@ export const approvedKnowledge = [
     answer:
       "Use the Contact page to send an enquiry to our team. Include your tracking number if relevant, but do not send passwords, payment details, or identity documents.",
   },
+  ...companyKnowledge,
 ];
 
 export const statusKnowledge = [

@@ -19,6 +19,7 @@ import {
   Minus,
   PackageCheck,
 } from "lucide-react";
+import { Offices } from "./offices";
 import { Header } from "./header";
 import { ArrowLink, Eyebrow } from "./ui";
 const modes = [
@@ -45,6 +46,32 @@ const modes = [
     icon: TrainFront,
     description: "An alternative to explore",
     detail: "Our team can confirm whether this suits your route.",
+  },
+];
+const services = [
+  {
+    name: "Sourcing",
+    icon: Ship,
+    description: "Find the right products",
+    detail: "Discuss sourcing from Yiwu and Guangzhou with our team.",
+    image: "/images/company/shipping.webp",
+    anchor: "sourcing",
+  },
+  {
+    name: "Supplier verification",
+    icon: ShieldCheck,
+    description: "Start with more clarity",
+    detail: "Confirm supplier-verification and quality-assurance requirements.",
+    image: "/images/company/yiwu.jpg",
+    anchor: "supplier-verification",
+  },
+  {
+    name: "Logistics coordination",
+    icon: Truck,
+    description: "Bring it all together",
+    detail: "Arrange shipping from China to Nigeria around your cargo needs.",
+    image: "/images/company/warehouse.jpg",
+    anchor: "logistics",
   },
 ];
 const steps = [
@@ -80,7 +107,7 @@ const faqs = [
   ],
   [
     "Which destinations and services are available?",
-    "Please share your origin, destination, and cargo requirements with our team. Service and route availability must be confirmed for your shipment.",
+    "We support shipping from China to Nigeria, with offices in Yiwu, Guangzhou, and Lagos. We also assist with sourcing, supplier verification, quality assurance, and logistics coordination. Confirm specific methods and delivery arrangements with our team.",
   ],
   [
     "When will my shipment arrive?",
@@ -105,8 +132,8 @@ export function Home() {
     <>
       <section className="hero">
         <Image
-          src="/images/hero.webp"
-          alt="Illustrative cargo truck at a container port beneath a blue sky"
+          src="/images/company/sea.jpg"
+          alt="Container ship and cargo truck image published on Savelanded’s website"
           fill
           priority
           sizes="(max-width: 768px) 100vw, 1260px"
@@ -119,13 +146,14 @@ export function Home() {
             <span /> YOUR CARGO. OUR COMMITMENT.
           </span>
           <h1>
-            A world of possibilities.
+            From China to Nigeria.
             <br />
-            One shipping partner.
+            With you at every step.
           </h1>
           <p>
-            From the first conversation to the final milestone.
-            <br className="desktop" /> A clearer way to move your cargo forward.
+            Sourcing, supplier verification, and shipping support.
+            <br className="desktop" /> Connecting your business with
+            possibilities in China.
           </p>
           <ArrowLink href="/quote">Get a shipping quote</ArrowLink>
           <Link className="hero-track-link" href="/track">
@@ -287,8 +315,8 @@ export function Home() {
           </p>
           <div className="process-visual">
             <Image
-              src="/images/hero.webp"
-              alt="Illustrative container port showing a coordinated shipping environment"
+              src="/images/company/warehouse.jpg"
+              alt="Cargo handling and loading photo published by Savelanded"
               fill
               sizes="400px"
             />
@@ -339,7 +367,7 @@ export function Home() {
       <section className="showcase" id="shipping">
         <div className="showcase-heading">
           <div>
-            <Eyebrow>Shipping possibilities</Eyebrow>
+            <Eyebrow>Sourcing, shipping & support</Eyebrow>
             <h2>
               Different cargo.
               <br />
@@ -352,38 +380,38 @@ export function Home() {
           <ArrowLink href="/shipping">Explore shipping</ArrowLink>
         </div>
         <div className="shipping-grid">
-          {modes.slice(0, 3).map((m, i) => (
+          {services.map((m, i) => (
             <article
               key={m.name}
               className={`shipping-card shipping-card-${i}`}
             >
               <Image
-                src="/images/hero.webp"
-                alt="Illustrative port and freight transport"
+                src={m.image}
+                alt="Shipping and cargo image published on Savelanded’s website"
                 fill
                 sizes="(max-width: 767px) 90vw, 400px"
               />
               <div className="shipping-overlay" />
               <span className="shipping-tag">
                 <m.icon size={14} />
-                {m.name} freight
+                {m.name}
               </span>
               <div className="shipping-card-copy">
                 <h3>{m.description}</h3>
                 <p>{m.detail}</p>
-                <Link href={`/shipping#${m.name.toLowerCase()}`}>
-                  Explore {m.name.toLowerCase()} shipping{" "}
-                  <ArrowUpRight size={18} />
+                <Link href={`/shipping#${m.anchor}`}>
+                  Learn about {m.name.toLowerCase()} <ArrowUpRight size={18} />
                 </Link>
               </div>
             </article>
           ))}
         </div>
         <p className="showcase-note">
-          Shipping methods are shown for enquiry purposes. Routes and service
-          availability require confirmation.
+          Specific transport methods, prices, and delivery arrangements are
+          confirmed for each shipment.
         </p>
       </section>
+      <Offices />
       <section className="journey-strip content">
         <span>
           FROM A QUESTION

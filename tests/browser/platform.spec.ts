@@ -43,7 +43,7 @@ test("responsive home, menus, accordion, carousel and navigation", async ({
 }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "A world of possibilities.",
+    "From China to Nigeria.",
   );
   await expect(page.locator(".hero-image")).toBeVisible();
   await page.getByRole("button", { name: "Sea", exact: true }).click();
@@ -292,4 +292,45 @@ test("public pages have no automated WCAG A/AA violations", async ({
       `${path}: ${JSON.stringify(result.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) })))}`,
     ).toEqual([]);
   }
+});
+
+test("company contacts, office directions, and sourced images are available", async ({
+  page,
+}) => {
+  await page.goto("/contact");
+  await expect(
+    page
+      .getByRole("link", {
+        name: "admsavelandedimpexpcomltd@gmail.com",
+        exact: true,
+      })
+      .first(),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Yiwu", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Guangzhou", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Lagos", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Chat on WhatsApp" }),
+  ).toHaveAttribute("href", "https://wa.me/message/XZ3YJGBGKCMAG1");
+  await expect(
+    page.getByRole("link", { name: "Find directions" }).first(),
+  ).toHaveAttribute("href", /google.com\/maps\/search/);
+  await page.goto("/about");
+  expect((await page.request.get("/images/company/yiwu.jpg")).status()).toBe(
+    200,
+  );
+  await page.getByRole("button", { name: "Open support chat" }).click();
+  await page
+    .getByLabel("Your support message")
+    .fill("What is your email address?");
+  await page.getByRole("button", { name: "Send message", exact: true }).click();
+  await expect(page.locator(".chat-message.assistant").last()).toContainText(
+    "admsavelandedimpexpcomltd@gmail.com",
+  );
 });

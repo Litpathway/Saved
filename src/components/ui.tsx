@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, Globe2 } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 export function ArrowLink({
   href,
   children,
@@ -19,12 +20,16 @@ export function ArrowLink({
 export function Brand() {
   return (
     <Link href="/" className="brand" aria-label="Savelanded Company home">
-      <span className="brand-icon">
-        <Globe2 size={30} />
-      </span>
+      <Image
+        className="brand-art"
+        src="/images/company/brand.png"
+        alt=""
+        width={63}
+        height={42}
+      />
       <span>
         Savelanded
-        <span className="brand-sub">COMPANY · SHIPPING & LOGISTICS</span>
+        <span className="brand-sub">IMPORT & EXPORT COMPANY LIMITED</span>
       </span>
     </Link>
   );

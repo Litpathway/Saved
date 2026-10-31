@@ -2,7 +2,7 @@
 
 ## Before accepting customers
 
-1. Confirm official company logo, legal entity, contacts, route/service availability, operating hours, privacy contact, retention periods, and shipping terms. Replace provisional branding and have legal pages reviewed. Do not add fictitious routes, offices, testimonials, experience, insurance, or partners.
+1. Review the company content imported from the official site (see company-sources.md), confirm conflicting office hours and address spelling, and obtain privacy contact, retention periods, and reviewed shipping terms. Have legal pages reviewed. Do not add fictitious routes, offices, testimonials, experience, insurance, or partners.
 2. Provision a managed PostgreSQL database with TLS, restricted access, backups and restore testing. Set a pooled runtime DATABASE_URL if supported; ensure migration sessions use a direct/session connection because the runner uses an advisory lock and transactions. Do not use PgBouncer transaction pooling for migrations.
 3. Configure NEXTAUTH_URL to the final HTTPS domain, a strong unique NEXTAUTH_SECRET, and DATABASE_URL securely. Do not prefix secrets with NEXT_PUBLIC_. Use the Node.js server runtime, not a static export or Edge runtime.
 4. Run `npm ci`, `npx prisma generate`, `npm run db:migrate` against the intended database, and `npm run build`. Provision the first owner using `npm run admin:create` in a secure shell. Do not seed production with tests. Additional EDITOR accounts can be created by an authorized operator with bcrypt-12 hashes; no public registration exists.

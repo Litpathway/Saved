@@ -9,12 +9,12 @@ export const metadata: Metadata = {
     template: "%s | Savelanded Company",
   },
   description:
-    "Request a shipping quote, follow recorded shipment updates, and connect with Savelanded Company.",
+    "China–Nigeria shipping, sourcing, supplier verification, and logistics coordination. Contact Savelanded in Yiwu, Guangzhou, and Lagos.",
   robots: { index: true, follow: true },
   openGraph: {
     title: "Savelanded Company",
     description: "Shipping, made clearer. Every step of the way.",
-    images: ["/images/hero.webp"],
+    images: ["/images/company/sea.jpg"],
   },
 };
 export default function RootLayout({

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Header } from "@/components/header";
 import { Eyebrow, ArrowLink } from "@/components/ui";
+import { Offices } from "@/components/offices";
+import { company } from "@/lib/company";
 export const metadata = { title: "About us" };
 export default function Page() {
   return (
@@ -9,42 +11,59 @@ export default function Page() {
       <section className="page-intro content">
         <Eyebrow>About Savelanded</Eyebrow>
         <h1>
-          Behind every shipment,
-          <br />a conversation.
+          Connecting China.
+          <br />
+          Supporting Nigerian business.
         </h1>
         <p>
-          Savelanded Company’s online home for shipping enquiries, shipment
-          updates, and customer support.
+          {company.name} connects manufacturers in China with businesses across
+          Nigeria.
         </p>
       </section>
       <section className="about-grid content">
         <div className="about-image">
           <Image
-            src="/images/hero.webp"
-            alt="Illustrative freight port with cargo truck and shipping containers"
+            src="/images/company/yiwu.jpg"
+            alt="Savelanded Import and Export Company Limited office sign in Yiwu"
             fill
             sizes="(max-width:768px) 100vw, 600px"
           />
         </div>
         <div>
-          <Eyebrow>Our approach</Eyebrow>
+          <Eyebrow>From sourcing to shipping</Eyebrow>
           <h2>
-            Make the next step
-            <br />a clear one.
+            Trade with clarity.
+            <br />
+            Move with confidence.
           </h2>
           <p className="section-copy">
-            Use this platform to share shipping requirements with our team,
-            follow recorded shipment milestones, and ask for assistance when you
-            need it.
+            Our work brings together sourcing, supplier verification, quality
+            assurance, and logistics coordination. With offices in Yiwu,
+            Guangzhou, and Lagos, we help customers discuss their requirements
+            with a team on both sides of the journey.
           </p>
           <p className="section-copy">
-            Every request starts with your cargo and destination. Our team must
-            confirm route availability, service scope, pricing, and timing
-            before a booking.
+            Professionalism, integrity, and clear communication guide our
+            approach. Contact us to confirm service scope, pricing, and timing
+            for your next shipment.
           </p>
           <ArrowLink href="/contact" dark>
-            Meet us in a conversation
+            Talk to our team
           </ArrowLink>
+        </div>
+      </section>
+      <Offices />
+      <section className="content company-leadership">
+        <Eyebrow>Our people</Eyebrow>
+        <h2>Meet the team.</h2>
+        <div className="office-grid">
+          {company.contacts.slice(0, 3).map((c) => (
+            <article key={c.name}>
+              <span className="tiny">{c.role}</span>
+              <h3>{c.name}</h3>
+              <a href={`tel:${c.phone.replace(/\s/g, "")}`}>{c.phone}</a>
+            </article>
+          ))}
         </div>
       </section>
     </>

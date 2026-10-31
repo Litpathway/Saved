@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { company } from "@/lib/company";
 import { Brand } from "./ui";
 export function Footer() {
   return (
@@ -7,9 +8,9 @@ export function Footer() {
         <div>
           <Brand />
           <p>
-            Shipping made clearer.
+            China to Nigeria.
             <br />
-            Every step of the way.
+            Sourcing. Shipping. Support.
           </p>
         </div>
         <div>
@@ -25,19 +26,24 @@ export function Footer() {
           <Link href="/admin">Administrator portal</Link>
         </div>
         <div>
-          <h3>Let’s talk logistics.</h3>
-          <p>
-            Have cargo in mind?
-            <br />
-            Start with a conversation.
-          </p>
-          <Link className="text-link" href="/contact">
-            Get in touch ↗
-          </Link>
+          <h3>Contact our team</h3>
+          <a className="contact-email" href={`mailto:${company.email}`}>
+            {company.email}
+          </a>
+          <a href="tel:+8618248547224">Wolex: +86 182 4854 7224</a>
+          <a href={company.whatsapp}>WhatsApp ↗</a>
+          <a href={company.facebook} target="_blank" rel="noreferrer">
+            Facebook ↗
+          </a>
+          <a href={company.instagram} target="_blank" rel="noreferrer">
+            Instagram ↗
+          </a>
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} Savelanded Company</span>
+        <span>
+          © {new Date().getFullYear()} {company.name}
+        </span>
         <div>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms of use</Link>

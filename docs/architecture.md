@@ -2,7 +2,7 @@
 
 ## Evidence and open questions
 
-The repository was empty. The existing domain returned a proxy denial; no official logo, company copy, office addresses, rates, route coverage, insurance terms, credentials, or historic case studies were available. No reference image was attached. Company-facing claims are therefore limited to the provided name and the implemented platform's behavior. Domain, user-written visual requirements, and supplied feature requirements guide the implementation.
+The repository was initially empty. The official WordPress site became accessible after the environment was published with updated networking. Its logo, China–Nigeria shipping and sourcing information, office addresses, public contacts, and photos are now incorporated. Source URLs, asset provenance, and conflicting opening hours are recorded in company-sources.md. No reference screenshot was attached. Rates, delivery guarantees, insurance terms, and certifications remain unverified and are not invented.
 
 ## Sitemap and user journeys
 
@@ -34,4 +34,4 @@ Same-origin write checks, NextAuth CSRF/session cookies, bcrypt, validated input
 
 ## Known external prerequisites
 
-Live email and AI were not exercised without credentials. Publication, external hosting, DNS, TLS, managed database backups, verified company information, privacy retention schedule, legal review, and production owner provisioning remain deployment tasks. No automatic deployment or real shipment movement is claimed.
+Live email and AI were not exercised without credentials. Publication, external hosting, DNS, TLS, managed database backups, resolution of published office-hour/address ambiguities, privacy retention schedule, legal review, and production owner provisioning remain deployment tasks. No automatic deployment or real shipment movement is claimed.

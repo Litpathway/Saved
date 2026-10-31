@@ -28,9 +28,9 @@ See [architecture and discovery](docs/architecture.md), [API reference](docs/api
 
 ## Integrations and verified company content
 
-No carrier integrations, live GPS, synthetic tracking movement, fake testimonials, partner logos, insurance promises, or unverified company history are included. The custom brand mark is provisional; replace it with the official asset when supplied. Hero photography is generated illustrative artwork, not company-owned equipment. Shipping methods are clearly presented as enquiry topics, not confirmed services. No reference screenshot was supplied; the implementation follows the written visual specification.
+No carrier integrations, live GPS, synthetic tracking movement, fake testimonials, insurance promises, or unverified company history are included. Company-published branding, China–Nigeria service information, public contacts, three office addresses, and photos were retrieved from the official WordPress site on 31 October 2026 and incorporated. See [company sources and discrepancies](docs/company-sources.md) for original URLs, image provenance, and conflicting office hours. Illustrative shipping imagery does not imply company-owned equipment. Transport methods still require confirmation per shipment. No reference screenshot was supplied; the layout follows the written visual specification.
 
-The existing domain could not be inspected because the environment proxy denied access. Verified contacts, business hours, address, services, history, and legal terms must be supplied before public launch. Optional contact variables display only when configured. The legal pages include explicit launch-review requirements.
+The contact page has official public defaults; optional NEXT_PUBLIC business contact variables override its primary contact channels. Confirm office hours, address spelling, privacy details, and legal terms before launch. Email, AI, and production hosting still require their separately documented credentials and configuration.
 
 ### AI assistant
 

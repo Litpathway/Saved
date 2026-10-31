@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { companyKnowledge } from "@/lib/company";
 import { approvedKnowledge, statusKnowledge } from "@/lib/knowledge";
 import { error, identity, limit, sameOrigin } from "@/lib/security";
 export async function POST(req: Request) {
@@ -33,6 +34,18 @@ export async function POST(req: Request) {
     const knowledge = [...approvedKnowledge, ...statusKnowledge, ...entries];
     if (!process.env.LLM_API_KEY) {
       const query = message.toLowerCase();
+      const companyAnswer = /email|whatsapp|phone|telephone/.test(query)
+        ? companyKnowledge[1]
+        : /opening hours|working hours|business hours/.test(query)
+          ? companyKnowledge[4]
+          : /office|address/.test(query)
+            ? companyKnowledge[0]
+            : null;
+      if (companyAnswer)
+        return Response.json({
+          reply: companyAnswer.answer,
+          mode: "knowledge",
+        });
       const terms =
         query
           .match(/[a-z]{4,}/g)
