@@ -65,6 +65,11 @@ export function AdminStatus({ availability }: { availability: Unavailable }) {
           </p>
         </div>
       )}
+      {availability.status === "unavailable" && availability.reference && (
+        <p className="form-note">
+          Support reference: <code>{availability.reference}</code>
+        </p>
+      )}
       <div className="admin-status-actions">
         <a className="pill pill-dark" href="/admin/login">
           Check again <ArrowUpRight size={17} />

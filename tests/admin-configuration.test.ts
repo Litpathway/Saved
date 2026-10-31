@@ -1,6 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { missingAdminConfiguration } from "../src/lib/admin-availability";
+import {
+  missingAdminConfiguration,
+  adminFailureReference,
+} from "../src/lib/admin-availability";
 test("admin reports missing server configuration without attempting authentication", () => {
   assert.deepEqual(missingAdminConfiguration({}), [
     "DATABASE_URL",
@@ -25,4 +28,25 @@ test("configured admin does not require a hardcoded deployment URL", () => {
     }),
     [],
   );
+});
+
+test("admin failure references never expose raw connection details", () => {
+  assert.equal(
+    adminFailureReference({
+      meta: {
+        driverAdapterError: {
+          cause: {
+            kind: "TlsConnectionError",
+            reason: "private connection detail",
+          },
+        },
+      },
+    }),
+    "DB-TLS",
+  );
+  assert.equal(
+    adminFailureReference({ message: "postgresql://private:secret@host/db" }),
+    "DB-UNAVAILABLE",
+  );
+  assert.equal(adminFailureReference({ code: "P1000" }), "DB-AUTH");
 });
