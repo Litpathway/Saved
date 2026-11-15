@@ -9,5 +9,17 @@ export async function POST(req: Request) {
     !timingSafeEqual(actual, expected)
   )
     return Response.json({ error: "Unauthorized" }, { status: 401 });
-  return Response.json(await deliverEmails());
+  try {
+    const result = await deliverEmails();
+    const unavailable =
+      !result.configured ||
+      result.failed > 0 ||
+      (result.pending > 0 && result.sent === 0);
+    return Response.json(result, { status: unavailable ? 503 : 200 });
+  } catch {
+    return Response.json(
+      { error: "Email processing unavailable" },
+      { status: 503 },
+    );
+  }
 }

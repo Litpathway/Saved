@@ -47,3 +47,13 @@ Set `RESEND_API_KEY`, a verified `EMAIL_FROM`, and `ADMIN_EMAIL`. Enquiry and em
 `prisma/schema.prisma` is the ORM source. SQL lives in `prisma/migrations`. Prisma's JS driver avoids native binary downloads. The Prisma 6 WASM migration engine encountered an unsupported PostgreSQL `name` type during validation; `scripts/migrate.ts` applies the generated SQL with transactions, SHA-256 drift checking, and a PostgreSQL advisory lock instead. Use `npm run db:migrate` consistently; do not mix this migration ledger with Prisma Migrate's ledger. To generate a subsequent migration, use `prisma migrate diff` with the previous schema and new schema in a development environment, review the SQL, and add an ordered migration directory. Never edit an already applied migration. Back up and stage changes before production.
 
 If Vercel shows a server-side exception on `/admin`, see [admin configuration troubleshooting](docs/deployment.md#fixing-the-vercel-admin-server-exception). The login and dashboard now render safe setup/recovery states instead of throwing when configuration is incomplete. Production still requires a hosted database, `NEXTAUTH_SECRET`, migrations, and a securely provisioned administrator.
+
+### Tracking CMS
+
+Open `/edit-tracking` to preview the focused tracking editor without administrator setup. It uses clearly labeled sample records and keeps edits in browser memory until refresh; it never calls the admin API. Live records and saving remain protected at `/admin`. Enable the authenticated tracking page when the owner requests administrator setup.
+
+### Local database and working CMS (Windows)
+
+The local database lives in ignored `.local/postgres-data` on `127.0.0.1:55432`. PostgreSQL binaries are under `.local/pgsql` (downloaded from EDB). Run `npm.cmd run local:setup` once to initialize the database, apply migrations, and generate private `.env` settings. Then `npm.cmd run dev` starts PostgreSQL if necessary and serves the application on the loopback interface. Open `http://localhost:3000/edit-tracking` to create and update real local tracking records.
+
+`LOCAL_ADMIN_ACCESS=true` enables automatic access to the local owner account only in development with loopback database and site URLs. Production always requires administrator authentication. Set it to `false` to use normal sign-in locally. Local mode does not configure external email or AI provider credentials; the existing outbox and FAQ fallback remain available. Never commit `.env` or `.local`.

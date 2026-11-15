@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowUpRight,
+  ScanLine,
   Package,
   CheckCircle2,
   Clock,
@@ -65,7 +66,10 @@ export function Tracker() {
           lookup(number);
         }}
       >
-        <label htmlFor="tracking-number">Your tracking number</label>
+        <div className="tracking-form-heading">
+          <ScanLine size={28} aria-hidden="true" />
+          <label htmlFor="tracking-number">Enter your tracking number</label>
+        </div>
         <div className="tracking-input">
           <input
             id="tracking-number"
@@ -75,9 +79,18 @@ export function Tracker() {
             placeholder="SL-XXXXXXXXXXXXXXXX"
             maxLength={40}
             autoCapitalize="characters"
-            aria-describedby="tracking-help"
+            aria-describedby={
+              error ? "tracking-help tracking-error" : "tracking-help"
+            }
+            aria-invalid={Boolean(error)}
+            spellCheck={false}
           />
-          <button disabled={busy} className="pill pill-dark">
+          <button
+            disabled={busy}
+            className="pill pill-dark"
+            aria-label={busy ? "Tracking shipment" : undefined}
+            aria-busy={busy}
+          >
             {busy ? (
               <Loader2 className="spin" size={18} />
             ) : (
@@ -92,7 +105,7 @@ export function Tracker() {
         </p>
       </form>
       {error && (
-        <div className="tracking-empty" role="alert">
+        <div className="tracking-empty" id="tracking-error" role="alert">
           <Package size={33} />
           <h2>Let’s check that number.</h2>
           <p>{error}</p>

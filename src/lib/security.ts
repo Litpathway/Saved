@@ -1,3 +1,4 @@
+import { localAdminEnabled } from "./local-development";
 import { createHash } from "crypto";
 import { db } from "./db";
 export async function limit(key: string, max = 30, seconds = 60) {
@@ -15,6 +16,18 @@ export function identity(req: Request) {
 }
 export function sameOrigin(req: Request) {
   const origin = req.headers.get("origin");
+  if (localAdminEnabled()) {
+    if (!origin) return false;
+    try {
+      const source = new URL(origin);
+      return (
+        ["localhost", "127.0.0.1"].includes(source.hostname) &&
+        source.host === req.headers.get("host")
+      );
+    } catch {
+      return false;
+    }
+  }
   return (
     !!origin && origin === new URL(process.env.NEXTAUTH_URL ?? req.url).origin
   );

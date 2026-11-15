@@ -3,7 +3,11 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
-export function AdminLogin() {
+export function AdminLogin({
+  destination = "/admin",
+}: {
+  destination?: "/admin" | "/edit-tracking";
+}) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const router = useRouter();
@@ -23,7 +27,7 @@ export function AdminLogin() {
           "Unable to sign in. Check your credentials or try again later.",
         );
       else {
-        router.push("/admin");
+        router.push(destination);
         router.refresh();
       }
     } catch {
@@ -34,7 +38,6 @@ export function AdminLogin() {
   }
   return (
     <form className="login" onSubmit={submit}>
-      <span className="eyebrow">Secure access</span>
       <h1>Administrator sign in</h1>
       <p className="form-note">
         For authorized Savelanded Company team members.

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Header } from "@/components/header";
-import { Eyebrow, ArrowLink } from "@/components/ui";
+import { ArrowLink } from "@/components/ui";
 import { Offices } from "@/components/offices";
 import { company } from "@/lib/company";
 export const metadata = { title: "About us" };
@@ -9,7 +9,6 @@ export default function Page() {
     <>
       <Header />
       <section className="page-intro content">
-        <Eyebrow>About Savelanded</Eyebrow>
         <h1>
           About Savelanded.
           <br />
@@ -29,7 +28,6 @@ export default function Page() {
           />
         </div>
         <div>
-          <Eyebrow>Sea & air freight</Eyebrow>
           <h2>
             Import and export.
             <br />
@@ -52,7 +50,6 @@ export default function Page() {
       </section>
       <Offices />
       <section className="content company-leadership">
-        <Eyebrow>Our people</Eyebrow>
         <h2>Meet the team.</h2>
         <div className="office-grid">
           {company.contacts.slice(0, 3).map((c) => (

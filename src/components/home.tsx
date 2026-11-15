@@ -1,38 +1,19 @@
 "use client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  ArrowLeft,
-  ArrowRight,
   ArrowUpRight,
   Ship,
   Plane,
   ScanLine,
-  MessagesSquare,
-  ClipboardList,
-  Route,
   Plus,
   Minus,
   PackageCheck,
 } from "lucide-react";
 import { Offices } from "./offices";
 import { Header } from "./header";
-import { ArrowLink, Eyebrow } from "./ui";
-const modes = [
-  {
-    name: "Sea",
-    icon: Ship,
-    description: "Shipping by sea",
-    detail: "Discuss container and cargo requirements with our team.",
-  },
-  {
-    name: "Air",
-    icon: Plane,
-    description: "Shipping by air",
-    detail: "Ask about availability for your origin and destination.",
-  },
-];
+import { ArrowLink } from "./ui";
 const services = [
   {
     name: "Sea freight",
@@ -98,15 +79,9 @@ const faqs = [
   ],
 ];
 export function Home() {
-  const [mode, setMode] = useState("Sea");
   const [step, setStep] = useState(0);
   const [faq, setFaq] = useState<number | null>(null);
   const [number, setNumber] = useState("");
-  const slider = useRef<HTMLDivElement>(null);
-  const ordered = [
-    ...modes.filter((m) => m.name === mode),
-    ...modes.filter((m) => m.name !== mode),
-  ];
   return (
     <>
       <section className="hero">
@@ -115,15 +90,12 @@ export function Home() {
           alt="Cargo loading at Savelanded"
           fill
           priority
-          sizes="(max-width: 768px) 100vw, 1260px"
+          sizes="(max-width: 1648px) 100vw, 1600px"
           className="hero-image"
         />
         <div className="hero-shade" />
         <Header hero />
         <div className="hero-copy">
-          <span className="hero-kicker">
-            <span /> SAVELANDED IMPORT & EXPORT
-          </span>
           <h1>
             From China to Nigeria.
             <br />
@@ -138,83 +110,6 @@ export function Home() {
           <Link className="hero-track-link" href="/track">
             Track your shipment <ArrowUpRight size={16} />
           </Link>
-        </div>
-        <div className="route-area">
-          <div className="route-caption">
-            FREIGHT SERVICES <span>01 — 02</span>
-          </div>
-          <div
-            className="route-slider"
-            ref={slider}
-            tabIndex={0}
-            aria-label="Shipping options to discuss"
-            onKeyDown={(e) => {
-              if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-                e.preventDefault();
-                slider.current?.scrollBy({
-                  left: e.key === "ArrowRight" ? 350 : -350,
-                  behavior: "smooth",
-                });
-              }
-            }}
-          >
-            {ordered.map((m) => (
-              <Link
-                href={`/shipping#${m.name.toLowerCase()}`}
-                key={m.name}
-                className="route-card"
-              >
-                <div className="route-thumb">
-                  <m.icon size={44} />
-                </div>
-                <div>
-                  <span className="tiny">CHINA TO NIGERIA</span>
-                  <h3>{m.name} freight</h3>
-                  <p>{m.description}</p>
-                  <span className="route-more">
-                    View service <ArrowUpRight size={14} />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div className="hero-bottom">
-          <div className="mode-pills" aria-label="Explore a shipping mode">
-            {modes.map((m) => (
-              <button
-                aria-pressed={mode === m.name}
-                key={m.name}
-                className={mode === m.name ? "selected" : ""}
-                onClick={() => {
-                  setMode(m.name);
-                  slider.current?.scrollTo({ left: 0, behavior: "smooth" });
-                }}
-              >
-                <m.icon size={16} />
-                {m.name}
-              </button>
-            ))}
-          </div>
-
-          <div className="slider-controls">
-            <button
-              aria-label="Previous shipping option"
-              onClick={() =>
-                slider.current?.scrollBy({ left: -350, behavior: "smooth" })
-              }
-            >
-              <ArrowLeft size={20} />
-            </button>
-            <button
-              aria-label="Next shipping option"
-              onClick={() =>
-                slider.current?.scrollBy({ left: 350, behavior: "smooth" })
-              }
-            >
-              <ArrowRight size={20} />
-            </button>
-          </div>
         </div>
       </section>
       <section className="tracking-strip content">
@@ -243,43 +138,8 @@ export function Home() {
           </button>
         </form>
       </section>
-      <section className="trust-grid content" aria-label="Shipping support">
-        {[
-          {
-            icon: MessagesSquare,
-            title: "China & Nigeria offices",
-            text: "A direct line to your shipping questions.",
-          },
-          {
-            icon: ScanLine,
-            title: "Shipment tracking",
-            text: "Recorded updates, easy to find.",
-          },
-          {
-            icon: ClipboardList,
-            title: "Shipping quotes",
-            text: "Discuss your requirements before booking.",
-          },
-          {
-            icon: Route,
-            title: "Shipping support",
-            text: "Stay informed from request to delivery.",
-          },
-        ].map((f) => (
-          <div className="trust-item" key={f.title}>
-            <span>
-              <f.icon size={27} strokeWidth={1.4} />
-            </span>
-            <div>
-              <h3>{f.title}</h3>
-              <p>{f.text}</p>
-            </div>
-          </div>
-        ))}
-      </section>
       <section className="process content" id="process">
         <div>
-          <Eyebrow>Our process</Eyebrow>
           <h2>
             How to ship
             <br />
@@ -293,7 +153,7 @@ export function Home() {
               src="/images/company/warehouse.jpg"
               alt="Cargo handling and loading photo published by Savelanded"
               fill
-              sizes="400px"
+              sizes="(max-width: 767px) 90vw, (max-width: 1023px) 640px, 560px"
             />
             <div className="process-float">
               <span>
@@ -342,7 +202,6 @@ export function Home() {
       <section className="showcase" id="shipping">
         <div className="showcase-heading">
           <div>
-            <Eyebrow>Our freight services</Eyebrow>
             <h2>
               Importing from China?
               <br />
@@ -405,7 +264,6 @@ export function Home() {
       </section>
       <section className="faq content" id="faq">
         <div>
-          <Eyebrow>Shipping FAQs</Eyebrow>
           <h2>
             Frequently asked
             <br />

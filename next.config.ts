@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
   poweredByHeader: false,
+  distDir:
+    process.env.LOCAL_ADMIN_SERVER === "loopback"
+      ? process.env.LOCAL_DEV_DIST || ".local/next"
+      : ".next",
   // Prisma's JS engine loads this WASM file dynamically, beyond Next's import tracing.
   outputFileTracingIncludes: {
     "/**": ["./node_modules/.prisma/client/query_compiler_bg.wasm"],

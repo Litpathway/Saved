@@ -1,3 +1,4 @@
+import { localAdminEnabled } from "@/lib/local-development";
 import { adminAvailability } from "@/lib/admin-availability";
 import { AdminStatus } from "@/components/admin-status";
 import { redirect } from "next/navigation";
@@ -33,7 +34,7 @@ export default async function Page() {
   return (
     <>
       <Header />
-      <AdminDashboard role={user.role} />
+      <AdminDashboard role={user.role} localAccess={localAdminEnabled()} />
     </>
   );
 }

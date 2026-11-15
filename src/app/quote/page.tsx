@@ -1,5 +1,4 @@
 import { Header } from "@/components/header";
-import { Eyebrow } from "@/components/ui";
 import { EnquiryForm } from "@/components/enquiry-form";
 export const metadata = { title: "Request a shipping quote" };
 export default function Page() {
@@ -7,7 +6,6 @@ export default function Page() {
     <>
       <Header />
       <section className="page-intro content">
-        <Eyebrow>Shipping quotation</Eyebrow>
         <h1>
           Request a quote
           <br />

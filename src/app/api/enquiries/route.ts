@@ -33,11 +33,17 @@ export async function POST(req: Request) {
         });
       return item;
     });
-    const delivery = await deliverEmails();
+    let emailConfigured = false;
+    try {
+      emailConfigured = (await deliverEmails()).configured;
+    } catch {
+      // The enquiry and email jobs are already committed. Retry delivery separately.
+      console.error("Enquiry saved; email processing unavailable.");
+    }
     return Response.json(
       {
         reference: row.id,
-        message: delivery.configured
+        message: emailConfigured
           ? "Your request is saved. Email confirmation is being processed."
           : "Your request is saved. Please keep this reference number for any follow-up.",
       },

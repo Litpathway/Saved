@@ -12,7 +12,6 @@ export function AdminStatus({ availability }: { availability: Unavailable }) {
       aria-labelledby="admin-status-heading"
     >
       <ShieldCheck size={30} aria-hidden="true" />
-      <span className="eyebrow">Secure administration</span>
       <h1 id="admin-status-heading">
         {setup || account
           ? "Administrator setup required"

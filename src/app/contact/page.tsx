@@ -1,5 +1,4 @@
 import { Header } from "@/components/header";
-import { Eyebrow } from "@/components/ui";
 import { EnquiryForm } from "@/components/enquiry-form";
 import { Offices } from "@/components/offices";
 import { company } from "@/lib/company";
@@ -12,7 +11,6 @@ export default function Page() {
     <>
       <Header />
       <section className="page-intro content">
-        <Eyebrow>Here to help</Eyebrow>
         <h1>
           Contact Savelanded.
           <br />

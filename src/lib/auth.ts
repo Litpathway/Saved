@@ -1,3 +1,4 @@
+import { localAdminEnabled, localAdminEmail } from "./local-development";
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
@@ -51,10 +52,13 @@ export const authOptions: NextAuthOptions = {
   },
 };
 export async function administrator(owner = false) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.email) return null;
+  const session = localAdminEnabled()
+    ? null
+    : await getServerSession(authOptions);
+  const email = localAdminEnabled() ? localAdminEmail : session?.user?.email;
+  if (!email) return null;
   const user = await db.admin.findUnique({
-    where: { email: session.user.email },
+    where: { email },
   });
   if (
     !user ||

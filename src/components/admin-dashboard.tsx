@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { Plus, ArrowUpRight, RefreshCw } from "lucide-react";
 type Shipment = {
@@ -47,17 +48,64 @@ type Data = {
     createdAt: string;
   }[];
 };
-export function AdminDashboard({ role }: { role: string }) {
+const previewData: Data = {
+  shipments: [
+    {
+      id: "sample-sea",
+      trackingNumber: "SL-DE00000000000001",
+      origin: "Yiwu",
+      destination: "Lagos",
+      method: "Sea",
+      status: "In Transit",
+      estimatedDelivery: null,
+      updatedAt: "2026-11-15T09:00:00Z",
+    },
+    {
+      id: "sample-air",
+      trackingNumber: "SL-DE00000000000002",
+      origin: "Guangzhou",
+      destination: "Lagos",
+      method: "Air",
+      status: "Processing at Warehouse",
+      estimatedDelivery: null,
+      updatedAt: "2026-11-15T08:00:00Z",
+    },
+  ],
+  statuses: [
+    "Shipment Registered",
+    "Processing at Warehouse",
+    "In Transit",
+    "Customs Clearance",
+    "Delivered",
+  ],
+  enquiries: [],
+  knowledge: [],
+  audits: [],
+};
+export function AdminDashboard({
+  role,
+  trackingOnly = false,
+  preview = false,
+  localAccess = false,
+}: {
+  role: string;
+  trackingOnly?: boolean;
+  preview?: boolean;
+  localAccess?: boolean;
+}) {
+  const editorForm = useRef<HTMLFormElement>(null);
   const [tab, setTab] = useState("Shipments");
-  const [data, setData] = useState<Data | null>(null);
+  const [data, setData] = useState<Data | null>(preview ? previewData : null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [savedTracking, setSavedTracking] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
   const [edit, setEdit] = useState<Shipment | null>(null);
   const [kb, setKb] = useState<Knowledge | null>(null);
   const [busy, setBusy] = useState(false);
   const load = useCallback(async () => {
+    if (preview) return;
     try {
       const r = await fetch("/api/admin");
       const d = await r.json();
@@ -66,14 +114,45 @@ export function AdminDashboard({ role }: { role: string }) {
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unable to load dashboard.");
     }
-  }, []);
+  }, [preview]);
   useEffect(() => {
     load();
   }, [load]);
   async function save(body: unknown) {
+    if (preview) {
+      const values = body as Record<string, string>;
+      const item: Shipment = {
+        id: values.id || crypto.randomUUID(),
+        trackingNumber:
+          data?.shipments.find((s) => s.id === values.id)?.trackingNumber ||
+          "SL-" +
+            crypto.randomUUID().replaceAll("-", "").slice(0, 16).toUpperCase(),
+        origin: values.origin,
+        destination: values.destination,
+        method: values.method,
+        status: values.status,
+        estimatedDelivery: values.estimatedDelivery || null,
+        updatedAt: new Date().toISOString(),
+      };
+      setData(
+        (current) =>
+          current && {
+            ...current,
+            shipments: [
+              item,
+              ...current.shipments.filter((s) => s.id !== item.id),
+            ],
+          },
+      );
+      setNotice(
+        "Preview changes only. No live tracking records have been saved. Refresh to reset the sample data.",
+      );
+      return true;
+    }
     setBusy(true);
     setError("");
     setNotice("");
+    setSavedTracking(null);
     try {
       const r = await fetch("/api/admin", {
         method: "POST",
@@ -82,6 +161,7 @@ export function AdminDashboard({ role }: { role: string }) {
       });
       const result = await r.json();
       if (!r.ok) throw new Error(result.error);
+      if (result.trackingNumber) setSavedTracking(result.trackingNumber);
       setNotice(
         "Changes saved. Shipment updates are immediately available in public tracking.",
       );
@@ -95,22 +175,51 @@ export function AdminDashboard({ role }: { role: string }) {
     }
   }
   return (
-    <section className="admin-shell">
+    <section className={`admin-shell ${trackingOnly ? "tracking-cms" : ""}`}>
       <div className="admin-title">
         <div>
           <span className="tiny">SAVELANDED OPERATIONS · {role}</span>
-          <h1>Your control centre.</h1>
+          <h1>{trackingOnly ? "Edit tracking." : "Your control centre."}</h1>
           <p>
-            Manage shipments, customer enquiries, and approved support
-            information.
+            {trackingOnly
+              ? "Create tracking records, update shipment statuses, and publish journey milestones."
+              : "Manage shipments, customer enquiries, and approved support information."}
           </p>
         </div>
-        <button
-          className="pill pill-dark"
-          onClick={() => signOut({ callbackUrl: "/admin/login" })}
-        >
-          Sign out <ArrowUpRight size={16} />
-        </button>
+        {!preview && !localAccess && (
+          <button
+            className="pill pill-dark"
+            onClick={() => signOut({ callbackUrl: "/admin/login" })}
+          >
+            Sign out <ArrowUpRight size={16} />
+          </button>
+        )}
+      </div>
+      {localAccess && (
+        <div className="notice" role="note">
+          Local development. Changes are saved to this computer?s database and
+          appear in public tracking.
+        </div>
+      )}
+      {preview && (
+        <div className="notice" role="note">
+          <strong>Preview with sample data.</strong> Explore the editor now.
+          Changes stay in this browser session and reset on refresh. Live
+          tracking access will be enabled after administrator setup.
+        </div>
+      )}
+      <div className="cms-navigation">
+        <Link href={preview ? "/" : trackingOnly ? "/admin" : "/edit-tracking"}>
+          {preview
+            ? "Back to website"
+            : trackingOnly
+              ? "All administration"
+              : "Open tracking CMS"}{" "}
+          <ArrowUpRight size={16} />
+        </Link>
+        <Link href="/track">
+          Public tracking <ArrowUpRight size={16} />
+        </Link>
       </div>
       {error && (
         <div role="alert" className="error">
@@ -123,60 +232,91 @@ export function AdminDashboard({ role }: { role: string }) {
       {notice && (
         <div className="notice" role="status">
           {notice}
+          {savedTracking && (
+            <p style={{ margin: "12px 0 0" }}>
+              <strong>{savedTracking}</strong>
+              {" ? "}
+              <Link
+                className="text-link"
+                href={`/track?number=${encodeURIComponent(savedTracking)}`}
+              >
+                View shipment tracking <ArrowUpRight size={16} />
+              </Link>
+            </p>
+          )}
         </div>
       )}
       {!data ? (
         <p className="admin-empty">Loading operations…</p>
       ) : (
         <>
-          <div className="admin-counts">
-            <div>
-              <strong>{data.shipments.length}</strong>Recent shipments
+          {!trackingOnly && (
+            <div className="admin-counts">
+              <div>
+                <strong>{data.shipments.length}</strong>Recent shipments
+              </div>
+              <div>
+                <strong>
+                  {data.enquiries.filter((e) => e.status === "NEW").length}
+                </strong>
+                New enquiries
+              </div>
+              <div>
+                <strong>
+                  {data.knowledge.filter((k) => k.published).length}
+                </strong>
+                Approved articles
+              </div>
             </div>
-            <div>
-              <strong>
-                {data.enquiries.filter((e) => e.status === "NEW").length}
-              </strong>
-              New enquiries
+          )}
+          {!trackingOnly && (
+            <div
+              className="admin-tabs"
+              role="tablist"
+              aria-label="Administration sections"
+            >
+              {[
+                "Shipments",
+                "Enquiries",
+                "Knowledge",
+                "Statuses",
+                "Audit log",
+              ].map((t) => (
+                <button
+                  key={t}
+                  role="tab"
+                  aria-selected={tab === t}
+                  className={tab === t ? "active" : ""}
+                  onClick={() => {
+                    setTab(t);
+                    setSearch("");
+                    setFilter("");
+                  }}
+                >
+                  {t}
+                </button>
+              ))}
             </div>
-            <div>
-              <strong>
-                {data.knowledge.filter((k) => k.published).length}
-              </strong>
-              Approved articles
-            </div>
-          </div>
-          <div
-            className="admin-tabs"
-            role="tablist"
-            aria-label="Administration sections"
-          >
-            {[
-              "Shipments",
-              "Enquiries",
-              "Knowledge",
-              "Statuses",
-              "Audit log",
-            ].map((t) => (
-              <button
-                key={t}
-                role="tab"
-                aria-selected={tab === t}
-                className={tab === t ? "active" : ""}
-                onClick={() => {
-                  setTab(t);
-                  setSearch("");
-                  setFilter("");
-                }}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+          )}
           {tab === "Shipments" && (
             <div className="admin-grid">
               <div className="admin-panel">
-                <h2>Shipment records</h2>
+                <div className="cms-record-heading">
+                  <h2>Tracking records</h2>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEdit(null);
+                      editorForm.current?.reset();
+                    }}
+                    disabled={busy}
+                  >
+                    New record <Plus size={16} />
+                  </button>
+                </div>
+                <p className="form-note">
+                  Search the latest 200 shipment records.
+                </p>
                 <input
                   aria-label="Search shipments"
                   placeholder="Search tracking number, origin, or destination"
@@ -194,6 +334,18 @@ export function AdminDashboard({ role }: { role: string }) {
                     <option key={s}>{s}</option>
                   ))}
                 </select>
+                {data.shipments.length > 0 &&
+                  !data.shipments.some(
+                    (s) =>
+                      (!filter || s.status === filter) &&
+                      `${s.trackingNumber} ${s.origin} ${s.destination}`
+                        .toLowerCase()
+                        .includes(search.toLowerCase()),
+                  ) && (
+                    <p className="admin-empty">
+                      No tracking records match your search.
+                    </p>
+                  )}
                 <div className="record-list">
                   {data.shipments
                     .filter(
@@ -204,7 +356,10 @@ export function AdminDashboard({ role }: { role: string }) {
                           .includes(search.toLowerCase()),
                     )
                     .map((s) => (
-                      <article key={s.id} className="record">
+                      <article
+                        key={s.id}
+                        className={`record ${edit?.id === s.id ? "record-selected" : ""}`}
+                      >
                         <h3>{s.trackingNumber}</h3>
                         <p>
                           {s.origin} → {s.destination}
@@ -212,7 +367,7 @@ export function AdminDashboard({ role }: { role: string }) {
                         <p>
                           {s.method} · {s.status}
                         </p>
-                        <button onClick={() => setEdit(s)}>
+                        <button disabled={busy} onClick={() => setEdit(s)}>
                           Edit / add milestone
                         </button>{" "}
                         <a
@@ -234,6 +389,9 @@ export function AdminDashboard({ role }: { role: string }) {
                 </div>
               </div>
               <form
+                ref={editorForm}
+                aria-label="Tracking record editor"
+                aria-busy={busy}
                 key={edit?.id ?? "new"}
                 className="admin-panel"
                 onSubmit={async (e) => {
@@ -248,7 +406,12 @@ export function AdminDashboard({ role }: { role: string }) {
                   }
                 }}
               >
-                <h2>{edit ? "Update shipment" : "Create a shipment"}</h2>
+                <h2>{edit ? "Update tracking" : "Create a tracking record"}</h2>
+                {!edit && (
+                  <p className="form-note">
+                    A unique tracking number is generated when you save.
+                  </p>
+                )}
                 {edit && (
                   <p className="form-note">
                     {edit.trackingNumber}{" "}

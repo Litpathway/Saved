@@ -6,12 +6,21 @@
   font-display: swap;
 }
 :root {
-  --blue: #3979af;
-  --deep: #245c94;
-  --ink: #171717;
-  --muted: #707070;
-  --line: #e5e7e9;
-  --soft: #f6f7f8;
+  --blue: #0092dd;
+  --deep: #000;
+  --ink: #000;
+  --muted: #161616;
+  --line: #e5e5e5;
+  --soft: #f7f7f7;
+  --blue-soft: #e5f4fc;
+}
+::selection {
+  background: var(--blue);
+  color: var(--ink);
+}
+input,
+textarea {
+  caret-color: var(--ink);
 }
 * {
   box-sizing: border-box;
@@ -22,6 +31,7 @@ html {
 }
 body {
   margin: 0;
+  min-height: 100vh;
   background: #fff;
   color: var(--ink);
   font-family: Manrope, Arial, sans-serif;
@@ -65,7 +75,7 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid #60a5fa;
+  outline: 3px solid var(--ink);
   outline-offset: 4px;
 }
 h1,
@@ -115,7 +125,7 @@ p {
     transform 0.2s;
 }
 .pill:hover {
-  background: #eaf0f5;
+  background: var(--blue-soft);
 }
 .pill svg {
   transition: transform 0.2s;
@@ -128,7 +138,8 @@ p {
   color: white;
 }
 .pill-dark:hover {
-  background: var(--deep);
+  background: var(--blue);
+  color: var(--ink);
 }
 .eyebrow {
   display: inline-block;
@@ -165,7 +176,7 @@ p {
   content: "";
   width: 46px;
   height: 7px;
-  background: #e16349;
+  background: var(--ink);
   position: absolute;
   transform: rotate(-35deg);
 }
@@ -206,7 +217,7 @@ p {
   display: flex;
   align-items: center;
   gap: 7px;
-  background: #f3f5f6;
+  background: var(--soft);
   padding: 8px 14px;
   border-radius: 999px;
   font-size: 12px;
@@ -268,13 +279,26 @@ p {
 .hero {
   position: relative;
   isolation: isolate;
-  height: 850px;
-  max-width: 1260px;
-  margin: 40px auto 0;
+  height: 920px;
+  max-width: 1600px;
+  width: calc(100% - 48px);
+  margin: 24px auto 0;
   border-radius: 28px;
   overflow: hidden;
-  background: #3979af;
+  background: #06121c;
   color: white;
+}
+.hero-art {
+  position: absolute;
+  z-index: 1;
+  width: 700px;
+  height: 700px;
+  right: -65px;
+  bottom: -160px;
+  pointer-events: none;
+}
+.hero-container {
+  object-fit: contain;
 }
 .hero-image {
   object-fit: cover;
@@ -284,11 +308,12 @@ p {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(6, 38, 65, 0.38), transparent 85%),
-    linear-gradient(0deg, rgba(5, 23, 34, 0.45), transparent 35%);
+    linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent 85%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.45), transparent 35%);
 }
 .hero-copy {
   position: absolute;
+  z-index: 2;
   top: 170px;
   left: 48px;
   right: 30px;
@@ -335,6 +360,7 @@ p {
 }
 .route-area {
   position: absolute;
+  z-index: 2;
   bottom: 125px;
   left: 57%;
   right: 0;
@@ -369,13 +395,13 @@ p {
   gap: 17px;
   padding: 12px;
   border-radius: 20px;
-  background: rgba(33, 42, 45, 0.55);
+  background: rgba(0, 0, 0, 0.55);
   border: 1px solid #ffffff50;
   backdrop-filter: blur(18px);
   transition: background 0.2s;
 }
 .route-card:hover {
-  background: rgba(33, 42, 45, 0.75);
+  background: rgba(0, 0, 0, 0.75);
 }
 .route-thumb {
   width: 110px;
@@ -383,7 +409,7 @@ p {
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: linear-gradient(130deg, #4b6b7a, #8d8172);
+  background: linear-gradient(130deg, var(--blue), var(--ink));
   flex-shrink: 0;
 }
 .route-card .tiny {
@@ -408,6 +434,7 @@ p {
 }
 .hero-bottom {
   position: absolute;
+  z-index: 2;
   bottom: 32px;
   left: 48px;
   right: 40px;
@@ -420,7 +447,7 @@ p {
   display: flex;
   gap: 9px;
 }
-.mode-pills button {
+.mode-pills a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -434,8 +461,8 @@ p {
   font-size: 12px;
   transition: background 0.2s;
 }
-.mode-pills button:hover,
-.mode-pills button.selected {
+.mode-pills a:hover,
+.mode-pills a.selected {
   background: #ffffff32;
 }
 .hero-note {
@@ -458,7 +485,7 @@ p {
   place-items: center;
 }
 .slider-controls button:hover {
-  background: #dae7f3;
+  background: var(--blue-soft);
 }
 .tracking-strip {
   display: flex;
@@ -535,6 +562,7 @@ p {
   margin: 0;
 }
 .process {
+  margin-top: clamp(40px, 5vw, 70px);
   display: grid;
   grid-template-columns: 45% 1fr;
   gap: 70px;
@@ -618,7 +646,7 @@ p {
 }
 .step-number {
   font-size: 21px;
-  color: #707070;
+  color: var(--muted);
   font-weight: 400;
 }
 .step strong {
@@ -648,6 +676,7 @@ p {
 .step.expanded .step-arrow,
 .step > button:hover .step-arrow {
   background: var(--blue);
+  color: var(--ink);
 }
 .step-detail {
   font-size: 12px;
@@ -659,7 +688,7 @@ p {
   margin: 0 auto;
   border-radius: 28px;
   padding: 40px;
-  background: #222;
+  background: var(--ink);
   color: white;
 }
 .showcase-heading {
@@ -670,7 +699,7 @@ p {
   margin-bottom: 33px;
 }
 .showcase .eyebrow {
-  border-color: #666;
+  border-color: var(--muted);
   margin-bottom: 22px;
 }
 .showcase h2 {
@@ -721,7 +750,7 @@ p {
 .shipping-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, #101a22f5, #15222d20 100%);
+  background: linear-gradient(0deg, #000000f5, #00000020 100%);
 }
 .shipping-tag {
   position: absolute;
@@ -846,7 +875,7 @@ p {
   margin-bottom: 25px;
 }
 .closing {
-  background: #edf3f7;
+  background: var(--blue-soft);
   border-radius: 24px;
   padding: 42px 48px;
   position: relative;
@@ -861,14 +890,14 @@ p {
   font-size: 42px;
   margin-top: 18px;
   margin-bottom: 0;
-  color: #234968;
+  color: var(--ink);
 }
 .closing > .pill {
   position: absolute;
   right: 48px;
   bottom: 47px;
   background: var(--blue);
-  color: white;
+  color: var(--ink);
 }
 footer {
   border-top: 1px solid var(--line);
@@ -891,7 +920,7 @@ footer {
 .footer-top > div > a:not(.brand) {
   display: block;
   font-size: 12px;
-  color: #666;
+  color: var(--muted);
   margin-bottom: 11px;
 }
 .footer-top .text-link {
@@ -904,7 +933,7 @@ footer {
   padding-top: 22px;
   display: flex;
   justify-content: space-between;
-  color: #707070;
+  color: var(--muted);
   font-size: 10px;
 }
 .footer-bottom > div {
@@ -942,7 +971,7 @@ footer {
 .big-number {
   font-size: 11px;
   letter-spacing: 2px;
-  color: var(--blue);
+  color: var(--ink);
 }
 .form-layout aside p {
   font-size: 13px;
@@ -952,7 +981,7 @@ footer {
   border-top: 1px solid var(--line);
   padding-top: 20px;
   margin-top: 30px;
-  color: #707070;
+  color: var(--muted);
   font-size: 11px;
 }
 .form-grid {
@@ -966,7 +995,7 @@ label {
   display: block;
 }
 label > span {
-  color: var(--blue);
+  color: var(--ink);
 }
 input,
 textarea,
@@ -1025,7 +1054,7 @@ textarea::placeholder {
   align-self: start;
 }
 .form-success > svg {
-  color: var(--blue);
+  color: var(--ink);
   margin-bottom: 24px;
 }
 .form-success h2 {
@@ -1068,7 +1097,7 @@ textarea::placeholder {
   margin-top: 28px;
 }
 .tracking-empty > svg {
-  color: var(--blue);
+  color: var(--ink);
   margin-bottom: 20px;
 }
 .tracking-empty h2 {
@@ -1101,7 +1130,7 @@ textarea::placeholder {
   display: flex;
   gap: 7px;
   align-items: center;
-  background: #eaf2f9;
+  background: var(--blue-soft);
   color: var(--deep);
   border-radius: 999px;
   padding: 8px 15px;
@@ -1120,7 +1149,7 @@ textarea::placeholder {
   display: flex;
   gap: 10px;
   font-size: 11px;
-  color: #707070;
+  color: var(--muted);
 }
 .result-route strong {
   display: block;
@@ -1166,8 +1195,8 @@ textarea::placeholder {
   display: none;
 }
 .timeline-dot {
-  background: #edf3f7;
-  color: var(--blue);
+  background: var(--blue-soft);
+  color: var(--ink);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -1177,7 +1206,7 @@ textarea::placeholder {
 }
 .timeline time {
   display: block;
-  color: #707070;
+  color: var(--muted);
   font-size: 10px;
   margin-top: 8px;
 }
@@ -1240,7 +1269,7 @@ textarea::placeholder {
 .legal li {
   font-size: 14px;
   line-height: 1.9;
-  color: #666;
+  color: var(--muted);
 }
 .chat-root {
   position: fixed;
@@ -1263,7 +1292,8 @@ textarea::placeholder {
   font-size: 12px;
 }
 .chat-toggle:hover {
-  background: #174676;
+  background: var(--blue);
+  color: var(--ink);
 }
 .chat-window {
   width: 365px;
@@ -1326,7 +1356,7 @@ textarea::placeholder {
   overflow-wrap: anywhere;
 }
 .chat-message.user {
-  background: #e8f0f7;
+  background: var(--blue-soft);
   margin-left: 24px;
   margin-right: 0;
 }
@@ -1343,7 +1373,7 @@ textarea::placeholder {
 }
 .chat-disclosure {
   font-size: 8px;
-  color: #707070;
+  color: var(--muted);
   padding: 5px 17px;
 }
 .chat-window form {
@@ -1457,7 +1487,7 @@ textarea::placeholder {
   white-space: nowrap;
 }
 .admin-tabs button.active {
-  border-color: var(--blue);
+  border-color: var(--ink);
   color: var(--deep);
 }
 .admin-grid {
@@ -1535,7 +1565,7 @@ textarea::placeholder {
   font-size: 28px;
 }
 .notice {
-  background: #eff6fb;
+  background: var(--blue-soft);
   color: var(--deep);
   padding: 14px 18px;
   border-radius: 12px;
@@ -1550,13 +1580,21 @@ textarea::placeholder {
 }
 .audit-line time {
   display: block;
-  color: #707070;
+  color: var(--muted);
   font-size: 10px;
 }
 @media (min-width: 1600px) {
   .hero {
-    height: 880px;
+    height: 960px;
     margin-top: 50px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-art {
+    width: 580px;
+    height: 580px;
+    bottom: -130px;
+    right: -90px;
   }
 }
 @media (max-width: 1279px) {
@@ -1655,7 +1693,7 @@ textarea::placeholder {
     z-index: 4;
   }
   .hero {
-    height: 830px;
+    height: 1000px;
   }
   .hero-copy {
     top: 155px;
@@ -1796,16 +1834,23 @@ textarea::placeholder {
   }
   .hero {
     margin: 12px 12px 0;
-    height: 800px;
+    height: 920px;
+    width: calc(100% - 24px);
     border-radius: 22px;
   }
+  .hero-art {
+    width: 500px;
+    height: 500px;
+    bottom: -110px;
+    right: -70px;
+  }
   .hero-image {
-    object-position: 47% center;
+    object-position: center;
   }
   .hero-shade {
     background:
-      linear-gradient(180deg, #123a6070, transparent 70%, #122c4070),
-      linear-gradient(90deg, #123a6030, transparent);
+      linear-gradient(180deg, #00000070, transparent 70%, #00000070),
+      linear-gradient(90deg, #00000030, transparent);
   }
   .header {
     width: calc(100% - 40px);
@@ -1915,13 +1960,14 @@ textarea::placeholder {
   .hero-bottom {
     left: 24px;
     right: 22px;
-    bottom: 27px;
+    top: 520px;
+    bottom: auto;
     gap: 10px;
   }
   .mode-pills {
     gap: 6px;
   }
-  .mode-pills button {
+  .mode-pills a {
     min-width: 0;
     gap: 5px;
     width: 56px;
@@ -2395,7 +2441,7 @@ textarea::placeholder {
     left: 20px;
     right: 17px;
   }
-  .mode-pills button {
+  .mode-pills a {
     width: 51px;
   }
   .slider-controls button {
@@ -2596,5 +2642,312 @@ textarea::placeholder {
 @media (max-width: 767px) {
   .freight-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Give the shipping introduction and tracking visual more room. */
+.process {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 64px;
+}
+.process h2 {
+  font-size: clamp(40px, 4vw, 54px);
+}
+.process .section-copy {
+  max-width: 480px;
+  font-size: 16px;
+}
+.process-visual {
+  width: calc(100% - 32px);
+  height: 390px;
+  margin-top: 40px;
+}
+.process-float {
+  width: 260px;
+  right: -32px;
+  bottom: 20px;
+  padding: 28px;
+}
+.process-float h3 {
+  font-size: 24px;
+}
+.process-float p {
+  font-size: 13px;
+}
+.process-float a {
+  font-size: 12px;
+  min-height: 32px;
+  align-items: center;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .process {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .process-visual {
+    max-width: 640px;
+    height: 430px;
+  }
+}
+@media (max-width: 767px) {
+  .process {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .process h2 {
+    font-size: clamp(34px, 8vw, 44px);
+  }
+  .process .section-copy {
+    font-size: 15px;
+  }
+  .process-visual {
+    width: calc(100% - 20px);
+    height: 350px;
+    margin-top: 30px;
+  }
+  .process-float {
+    width: min(220px, 76%);
+    right: -20px;
+    bottom: 16px;
+    padding: 22px;
+  }
+  .process-float h3 {
+    font-size: 21px;
+  }
+}
+
+/* Shipment lookup: clear hierarchy and a prominent tracking action. */
+.tracking-intro {
+  padding-top: 72px;
+  padding-bottom: 32px;
+}
+.tracking-intro h1 {
+  font-size: clamp(40px, 5vw, 68px);
+  max-width: 900px;
+  letter-spacing: -0.035em;
+  margin-bottom: 20px;
+}
+.tracking-intro > p {
+  max-width: 610px;
+  font-size: 18px;
+}
+.tracker {
+  max-width: 1000px;
+}
+.tracker > form {
+  background: var(--blue-soft);
+  border-radius: 16px;
+  padding: 40px;
+}
+.tracking-form-heading {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.tracking-form-heading label {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.tracking-input {
+  gap: 16px;
+}
+.tracking-input input {
+  min-height: 64px;
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-family: inherit;
+  font-size: 17px;
+  border-color: #737373;
+}
+.tracking-input input::placeholder {
+  color: #666;
+}
+.tracking-input .pill {
+  background: var(--blue);
+  color: var(--ink);
+  border-radius: 12px;
+  min-height: 64px;
+  padding: 18px 26px;
+  font-size: 15px;
+}
+.tracking-input .pill:hover {
+  background: var(--ink);
+  color: white;
+}
+.tracker > form .form-note {
+  font-size: 13px;
+  margin: 18px 0 0;
+  line-height: 1.7;
+}
+@media (max-width: 767px) {
+  .tracking-intro {
+    padding-top: 40px;
+    padding-bottom: 24px;
+  }
+  .tracking-intro > p {
+    font-size: 16px;
+  }
+  .tracker > form {
+    padding: 24px 20px;
+  }
+  .tracking-form-heading {
+    gap: 12px;
+  }
+  .tracking-form-heading label {
+    font-size: 18px;
+  }
+  .tracking-form-heading svg {
+    flex-shrink: 0;
+  }
+  .tracking-input .pill {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+/* Photo-led freight services. */
+.method-grid article {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.freight-photo {
+  position: relative;
+  aspect-ratio: 1.9;
+  background: var(--blue-soft);
+}
+.freight-photo img {
+  object-fit: cover;
+}
+.freight-photo-air img {
+  object-position: center;
+}
+.freight-details {
+  padding: 32px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.freight-details h2 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 20px;
+}
+.freight-details h2 svg {
+  flex-shrink: 0;
+}
+.freight-details p.small {
+  width: 100%;
+  flex: 1;
+}
+.freight-details .pill {
+  white-space: normal;
+  background: var(--blue);
+  color: var(--ink);
+}
+.freight-details .pill:hover {
+  background: var(--ink);
+  color: white;
+}
+@media (max-width: 767px) {
+  .freight-photo {
+    aspect-ratio: 1.6;
+  }
+  .freight-details {
+    padding: 24px;
+  }
+  .method-grid .freight-details .pill {
+    width: 100%;
+    font-size: 13px;
+    gap: 16px;
+  }
+}
+
+/* Focused tracking content management. */
+.cms-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 0 0 32px;
+}
+.cms-navigation a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.tracking-cms .admin-title h1 {
+  font-size: clamp(36px, 4vw, 56px);
+  letter-spacing: -0.035em;
+}
+.tracking-cms .admin-grid {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 28px;
+  align-items: start;
+}
+.tracking-cms .admin-panel {
+  border-radius: 16px;
+  padding: 30px;
+}
+.tracking-cms form.admin-panel {
+  background: var(--blue-soft);
+}
+.cms-record-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cms-record-heading h2 {
+  margin-bottom: 0;
+}
+.cms-record-heading button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--blue);
+  border: 0;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.tracking-cms .record-selected {
+  background: var(--blue-soft);
+  padding: 18px;
+  border-radius: 12px;
+}
+.tracking-cms .record h3 {
+  overflow-wrap: anywhere;
+}
+.tracking-cms form .pill-dark {
+  background: var(--blue);
+  color: var(--ink);
+}
+.tracking-cms form .pill-dark:hover {
+  background: var(--ink);
+  color: white;
+}
+@media (max-width: 900px) {
+  .tracking-cms .admin-grid {
+    grid-template-columns: 1fr;
+  }
+  .tracking-cms .record-list {
+    max-height: 440px;
+    overflow-y: auto;
+  }
+}
+@media (max-width: 767px) {
+  .tracking-cms .admin-panel {
+    padding: 22px 18px;
   }
 }

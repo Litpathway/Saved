@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0",
+    "dev": "node scripts/dev.mjs",
     "build": "prisma generate && next build",
     "start": "next start --hostname 0.0.0.0",
     "db:migrate": "tsx scripts/migrate.ts",
@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
     "test:admin-runtime": "tsx --test tests/admin-runtime.integration.ts",
-    "test:prisma-tracing": "tsx --test tests/prisma-tracing.integration.ts"
+    "test:prisma-tracing": "tsx --test tests/prisma-tracing.integration.ts",
+    "local:setup": "node scripts/local-database.mjs"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^6.19.3",

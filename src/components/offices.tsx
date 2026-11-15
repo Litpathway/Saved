@@ -1,10 +1,8 @@
 import { ArrowUpRight } from "lucide-react";
 import { company } from "@/lib/company";
-import { Eyebrow } from "./ui";
 export function Offices() {
   return (
     <section className="offices content" id="offices">
-      <Eyebrow>Our offices</Eyebrow>
       <h2>
         China to Nigeria.
         <br />

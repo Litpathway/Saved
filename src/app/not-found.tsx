@@ -5,7 +5,6 @@ export default function NotFound() {
     <>
       <Header />
       <section className="page-intro content" style={{ paddingBottom: 100 }}>
-        <span className="eyebrow">404 · Page not found</span>
         <h1>A little off route.</h1>
         <p>Let’s get you back to the right place.</p>
         <ArrowLink href="/" dark>

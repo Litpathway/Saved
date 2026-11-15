@@ -11,7 +11,6 @@ export default function AdminError({
     <>
       <Header />
       <section className="login">
-        <span className="eyebrow">Secure administration</span>
         <h1>We couldn’t load administration.</h1>
         <p>
           Please try again. If the problem continues, ask the site operator to
