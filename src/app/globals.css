@@ -314,7 +314,7 @@ p {
 .hero-copy {
   position: absolute;
   z-index: 2;
-  top: 170px;
+  top: 230px;
   left: 48px;
   right: 30px;
 }
@@ -350,27 +350,13 @@ p {
   min-width: 235px;
 }
 .hero-track-link {
-  position: relative;
-  top: 24px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
   margin-left: 22px;
   font-size: 12px;
-  font-weight: 600;
-  min-height: 46px;
-  padding: 10px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  transition: background 0.2s, border-color 0.2s;
-}
-.hero-track-link:hover {
-  background: rgba(255, 255, 255, 0.26);
-  border-color: rgba(255, 255, 255, 0.65);
+  border-bottom: 1px solid #ffffff70;
+  padding-bottom: 4px;
 }
 .route-area {
   position: absolute;
@@ -1710,7 +1696,7 @@ textarea::placeholder {
     height: 1000px;
   }
   .hero-copy {
-    top: 155px;
+    top: 215px;
   }
   .hero h1 {
     font-size: 49px;
@@ -1901,7 +1887,7 @@ textarea::placeholder {
   .hero-copy {
     left: 24px;
     right: 22px;
-    top: 129px;
+    top: 189px;
   }
   .hero-kicker {
     font-size: 7px;
