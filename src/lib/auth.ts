@@ -2,6 +2,7 @@ import { localAdminEnabled, localAdminEmail } from "./local-development";
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
+import { createHash } from "node:crypto";
 import { db } from "./db";
 import { limit } from "./security";
 export const authOptions: NextAuthOptions = {
@@ -35,31 +36,56 @@ export const authOptions: NextAuthOptions = {
             "$2b$12$C6UzMDM.H6dfI/f/IKcEe.5JFaQ0YPkUR9p7WLCXXNqLDRCqvU0G6",
         );
         return admin && valid
-          ? { id: admin.id, email: admin.email, name: admin.role }
+          ? {
+              id: admin.id,
+              email: admin.email,
+              name: admin.role,
+              credentialVersion: credentialVersion(admin.passwordHash),
+            }
           : null;
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = user.name;
+      if (user) {
+        token.role = user.name;
+        token.credentialVersion = (
+          user as { credentialVersion?: string }
+        ).credentialVersion;
+      }
       return token;
     },
     async session({ session, token }) {
       if (session.user) session.user.name = String(token.role);
+      (
+        session as typeof session & { credentialVersion?: string }
+      ).credentialVersion = token.credentialVersion as string | undefined;
       return session;
     },
   },
 };
-export async function administrator(owner = false) {
-  const session = localAdminEnabled()
-    ? null
-    : await getServerSession(authOptions);
-  const email = localAdminEnabled() ? localAdminEmail : session?.user?.email;
-  if (!email) return null;
-  const user = await db.admin.findUnique({
-    where: { email },
+function credentialVersion(passwordHash: string) {
+  return createHash("sha256").update(passwordHash).digest("hex");
+}
+
+export async function sessionAdmin() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) return null;
+  const admin = await db.admin.findUnique({
+    where: { email: session.user.email },
   });
+  const version = (session as typeof session & { credentialVersion?: string })
+    .credentialVersion;
+  return admin && version === credentialVersion(admin.passwordHash)
+    ? admin
+    : null;
+}
+
+export async function administrator(owner = false) {
+  const user = localAdminEnabled()
+    ? await db.admin.findUnique({ where: { email: localAdminEmail } })
+    : await sessionAdmin();
   if (
     !user ||
     !["OWNER", "EDITOR"].includes(user.role) ||
@@ -67,4 +93,10 @@ export async function administrator(owner = false) {
   )
     return null;
   return user;
+}
+
+export async function passwordChangeRequired() {
+  if (localAdminEnabled()) return false;
+  const admin = await sessionAdmin();
+  return admin?.role === "OWNER_PASSWORD_RESET";
 }

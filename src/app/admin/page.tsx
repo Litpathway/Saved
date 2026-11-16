@@ -2,7 +2,7 @@ import { localAdminEnabled } from "@/lib/local-development";
 import { adminAvailability } from "@/lib/admin-availability";
 import { AdminStatus } from "@/components/admin-status";
 import { redirect } from "next/navigation";
-import { administrator } from "@/lib/auth";
+import { administrator, passwordChangeRequired } from "@/lib/auth";
 import { AdminDashboard } from "@/components/admin-dashboard";
 import { Header } from "@/components/header";
 export const dynamic = "force-dynamic";
@@ -20,7 +20,9 @@ export default async function Page() {
       </>
     );
   let user;
+  let requiresChange = false;
   try {
+    requiresChange = await passwordChangeRequired();
     user = await administrator();
   } catch {
     return (
@@ -30,6 +32,7 @@ export default async function Page() {
       </>
     );
   }
+  if (requiresChange) redirect("/admin/change-password");
   if (!user) redirect("/admin/login");
   return (
     <>

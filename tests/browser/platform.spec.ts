@@ -16,6 +16,8 @@ const db = new PrismaClient({
 });
 const email = `test-${randomBytes(5).toString("hex")}@example.test`;
 const password = randomBytes(24).toString("base64url");
+const firstLoginEmail = `first-login-${randomBytes(5).toString("hex")}@example.test`;
+const firstLoginPassword = randomBytes(24).toString("base64url");
 let tracking = "";
 let shipmentId = "";
 const enquiryIds: string[] = [];
@@ -30,6 +32,13 @@ test.beforeAll(async () => {
       role: "EDITOR",
     },
   });
+  await db.admin.create({
+    data: {
+      email: firstLoginEmail,
+      passwordHash: await hash(firstLoginPassword, 12),
+      role: "OWNER_PASSWORD_RESET",
+    },
+  });
 });
 test.afterAll(async () => {
   if (shipmentId) {
@@ -40,9 +49,39 @@ test.afterAll(async () => {
   await db.emailJob.deleteMany({ where: { enquiryId: { in: enquiryIds } } });
   await db.enquiry.deleteMany({ where: { id: { in: enquiryIds } } });
   await db.admin.deleteMany({
-    where: { email: { in: [email, "editor-" + email] } },
+    where: { email: { in: [email, "editor-" + email, firstLoginEmail] } },
+  });
+  await db.auditLog.deleteMany({
+    where: { actor: firstLoginEmail, action: "first_login_password_change" },
   });
   await db.$disconnect();
+});
+test("first-login owner must change the temporary password before admin access", async ({
+  page,
+}) => {
+  const newPassword = randomBytes(24).toString("base64url");
+  await page.goto("/admin/login");
+  await page.getByLabel("Email address").fill(firstLoginEmail);
+  await page.getByLabel("Password", { exact: true }).fill(firstLoginPassword);
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(page).toHaveURL("/admin/change-password");
+  expect((await page.request.get("/api/admin")).status()).toBe(401);
+  await page.getByLabel("Temporary password").fill(firstLoginPassword);
+  await page.getByLabel("New password", { exact: true }).fill(newPassword);
+  await page.getByLabel("Confirm new password").fill(newPassword);
+  await page.getByRole("button", { name: "Save password" }).click();
+  await expect(page).toHaveURL("/admin/login?changed=1");
+  expect((await page.request.get("/api/admin")).status()).toBe(401);
+  await page.getByLabel("Email address").fill(firstLoginEmail);
+  await page.getByLabel("Password", { exact: true }).fill(newPassword);
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(page).toHaveURL("/admin");
+  await expect(
+    page.getByRole("heading", { name: "Your control centre." }),
+  ).toBeVisible();
+  expect((await page.request.get("/api/admin")).status()).toBe(200);
+  await page.goto("/admin/change-password");
+  await expect(page).toHaveURL("/admin");
 });
 test("responsive home, menus, accordion, carousel and navigation", async ({
   page,

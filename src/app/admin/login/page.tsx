@@ -12,19 +12,21 @@ export const dynamic = "force-dynamic";
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; changed?: string }>;
 }) {
   if (localAdminEnabled()) redirect("/edit-tracking");
+  const params = await searchParams;
   const destination =
-    (await searchParams).next === "/edit-tracking"
-      ? "/edit-tracking"
-      : "/admin";
+    params.next === "/edit-tracking" ? "/edit-tracking" : "/admin";
   const availability = await adminAvailability();
   return (
     <>
       <Header />
       {availability.status === "ready" ? (
-        <AdminLogin destination={destination} />
+        <AdminLogin
+          destination={destination}
+          passwordChanged={params.changed === "1"}
+        />
       ) : (
         <AdminStatus availability={availability} />
       )}

@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 export function AdminLogin({
   destination = "/admin",
+  passwordChanged = false,
 }: {
   destination?: "/admin" | "/edit-tracking";
+  passwordChanged?: boolean;
 }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -39,6 +41,11 @@ export function AdminLogin({
   return (
     <form className="login" onSubmit={submit}>
       <h1>Administrator sign in</h1>
+      {passwordChanged && (
+        <p className="form-note" role="status">
+          Password saved. Sign in with your new password.
+        </p>
+      )}
       <p className="form-note">
         For authorized Savelanded Company team members.
       </p>

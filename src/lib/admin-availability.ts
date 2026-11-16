@@ -81,7 +81,7 @@ export async function adminAvailability(): Promise<AdminAvailability> {
   if (missing.length) return { status: "setup-required", missing };
   try {
     const admin = await db.admin.findFirst({
-      where: { role: { in: ["OWNER", "EDITOR"] } },
+      where: { role: { in: ["OWNER", "EDITOR", "OWNER_PASSWORD_RESET"] } },
       select: { id: true },
     });
     return admin ? { status: "ready" } : { status: "account-required" };

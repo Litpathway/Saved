@@ -1,22 +1,16 @@
+import { localAdminEnabled } from "@/lib/local-development";
+import { adminAvailability } from "@/lib/admin-availability";
+import { AdminStatus } from "@/components/admin-status";
+import { redirect } from "next/navigation";
+import { administrator, passwordChangeRequired } from "@/lib/auth";
 import { AdminDashboard } from "@/components/admin-dashboard";
 import { Header } from "@/components/header";
-import { AdminStatus } from "@/components/admin-status";
-import { adminAvailability } from "@/lib/admin-availability";
-import { administrator } from "@/lib/auth";
-import { localAdminEnabled } from "@/lib/local-development";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Edit tracking",
   robots: { index: false, follow: false },
 };
 export default async function Page() {
-  if (!localAdminEnabled())
-    return (
-      <>
-        <Header />
-        <AdminDashboard role="Preview" trackingOnly preview />
-      </>
-    );
   const availability = await adminAvailability();
   if (availability.status !== "ready")
     return (
@@ -25,18 +19,29 @@ export default async function Page() {
         <AdminStatus availability={availability} />
       </>
     );
-  const user = await administrator();
-  if (!user)
+  let user;
+  let requiresChange = false;
+  try {
+    requiresChange = await passwordChangeRequired();
+    user = await administrator();
+  } catch {
     return (
       <>
         <Header />
-        <AdminStatus availability={{ status: "account-required" }} />
+        <AdminStatus availability={{ status: "unavailable" }} />
       </>
     );
+  }
+  if (requiresChange) redirect("/admin/change-password");
+  if (!user) redirect("/admin/login?next=/edit-tracking");
   return (
     <>
       <Header />
-      <AdminDashboard role="Local owner" trackingOnly localAccess />
+      <AdminDashboard
+        role={user.role}
+        trackingOnly
+        localAccess={localAdminEnabled()}
+      />
     </>
   );
 }
