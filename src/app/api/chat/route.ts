@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const { message } = z
       .object({ message: z.string().trim().min(1).max(1000) })
       .parse(await req.json());
-    const tracking = message.toUpperCase().match(/\b(?:SL-[A-F0-9]{16}|SL\d{7}|GZ\d{7})\b/)?.[0];
+    const tracking = message.toUpperCase().match(/\b(?:SL-[A-F0-9]{16}|(?:SL|GZ)\d{6,7})\b/)?.[0];
     if (tracking) {
       const s = await db.shipment.findUnique({
         where: { trackingNumber: tracking },

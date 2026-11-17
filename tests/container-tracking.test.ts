@@ -10,8 +10,10 @@ const on = (date: string) => new Date(`${date}T12:00:00Z`);
 test("Yiwu and Guangzhou manifests normalize while legacy codes remain valid", () => {
   assert.equal(trackingSchema.parse(" sl0001012 "), "SL0001012");
   assert.equal(trackingSchema.parse("gz0000405"), "GZ0000405");
+  assert.equal(trackingSchema.parse("sl001198"), "SL001198");
+  assert.equal(trackingSchema.parse("gz000405"), "GZ000405");
   assert.equal(trackingSchema.parse("sl-a123456789abcdef"), "SL-A123456789ABCDEF");
-  for (const invalid of ["SL000101", "GZ00004050", "AB0000405", "SL0001ABC"])
+  for (const invalid of ["SL00119", "GZ00004050", "AB0000405", "SL0001ABC"])
     assert.equal(trackingSchema.safeParse(invalid).success, false);
 });
 

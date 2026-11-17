@@ -414,6 +414,13 @@ export function AdminDashboard({
                   e.preventDefault();
                   const form = e.currentTarget;
                   const values = Object.fromEntries(new FormData(form));
+                  const manifest = String(values.trackingNumber ?? "").trim().toUpperCase();
+                  if (manifest && !/^(?:SL-[A-F0-9]{16}|(?:SL|GZ)\d{6,7})$/.test(manifest)) {
+                    setError("Enter a complete manifest number: SL or GZ followed by 6 or 7 digits.");
+                    form.elements.namedItem("trackingNumber") instanceof HTMLElement &&
+                      (form.elements.namedItem("trackingNumber") as HTMLElement).focus();
+                    return;
+                  }
                   if (
                     await save({ ...values, action: "shipment", id: edit?.id })
                   ) {
@@ -427,7 +434,7 @@ export function AdminDashboard({
                 <h2>{edit ? "Update tracking" : "Create a tracking record"}</h2>
                 {!edit && (
                   <p className="form-note">
-                    Enter a Yiwu or Guangzhou manifest number, or leave it blank to generate a tracking number.
+                    Enter a Yiwu or Guangzhou manifest number (SL or GZ plus 6 or 7 digits), or leave it blank to generate a tracking number.
                   </p>
                 )}
                 {edit && (
@@ -444,7 +451,7 @@ export function AdminDashboard({
                     <input
                       name="trackingNumber"
                       defaultValue={edit?.trackingNumber ?? ""}
-                      placeholder="SL0001012 or GZ0000405"
+                      placeholder="SL001198 or GZ0000405"
                       maxLength={19}
                       required={automatic}
                       autoCapitalize="characters"

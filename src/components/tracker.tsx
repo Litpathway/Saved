@@ -77,7 +77,7 @@ export function Tracker() {
             value={number}
             onChange={(e) => setNumber(e.target.value)}
             required
-            placeholder="SL0001012 or GZ0000405"
+            placeholder="SL001198 or GZ0000405"
             maxLength={40}
             autoCapitalize="characters"
             aria-describedby={

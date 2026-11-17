@@ -59,10 +59,13 @@ export async function POST(req: Request) {
           note, estimatedDelivery, loadedAt, trackingNumber,
           automaticTracking, manualOverride, ...data
         } = shipmentSchema.parse(body);
-        const manifest = trackingNumber ? trackingSchema.parse(trackingNumber) : "";
+        const parsedManifest = trackingNumber ? trackingSchema.safeParse(trackingNumber) : null;
+        if (parsedManifest && !parsedManifest.success)
+          throw new Error("Enter a complete manifest number: SL or GZ followed by 6 or 7 digits.");
+        const manifest = parsedManifest?.success ? parsedManifest.data : "";
         if (automaticTracking && (!manifest || !loadedAt || !estimatedDelivery || data.method !== "Sea"))
           throw new Error("Automatic container tracking requires a manifest, sea freight, loading date, and estimated arrival date.");
-        if (automaticTracking && !/^(SL|GZ)\d{7}$/.test(manifest))
+        if (automaticTracking && !/^(SL|GZ)\d{6,7}$/.test(manifest))
           throw new Error("Use a Yiwu or Guangzhou manifest for automatic tracking.");
         if (loadedAt && estimatedDelivery && new Date(estimatedDelivery) <= new Date(loadedAt))
           throw new Error("Estimated arrival must be after the loading date.");
@@ -163,7 +166,7 @@ export async function POST(req: Request) {
       e instanceof z.ZodError
         ? "Please check the submitted fields."
         : e instanceof Error &&
-            ["Owner role required", "Invalid status", "Automatic container tracking requires a manifest, sea freight, loading date, and estimated arrival date.", "Use a Yiwu or Guangzhou manifest for automatic tracking.", "Estimated arrival must be after the loading date.", "Set an initial estimated arrival 45 to 60 days after loading. You can adjust it later for delays.", "A delayed container needs a public correction note."].includes(e.message)
+            ["Owner role required", "Invalid status", "Enter a complete manifest number: SL or GZ followed by 6 or 7 digits.", "Automatic container tracking requires a manifest, sea freight, loading date, and estimated arrival date.", "Use a Yiwu or Guangzhou manifest for automatic tracking.", "Estimated arrival must be after the loading date.", "Set an initial estimated arrival 45 to 60 days after loading. You can adjust it later for delays.", "A delayed container needs a public correction note."].includes(e.message)
           ? e.message
           : "Unable to save. Check the record and try again.",
       400,

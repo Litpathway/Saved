@@ -43,8 +43,8 @@ export const trackingSchema = z
   .trim()
   .toUpperCase()
   .regex(
-    /^(?:SL-[A-F0-9]{16}|SL\d{7}|GZ\d{7})$/,
-    "Enter a Yiwu code (SL0001012), Guangzhou code (GZ0000405), or a tracking number supplied by our team.",
+    /^(?:SL-[A-F0-9]{16}|(?:SL|GZ)\d{6,7})$/,
+    "Enter a Yiwu or Guangzhou code (SL or GZ plus 6–7 digits), or a tracking number supplied by our team.",
   );
 export const defaultStatuses = [
   "Shipment Registered",
