@@ -314,7 +314,7 @@ p {
 .hero-copy {
   position: absolute;
   z-index: 2;
-  top: 230px;
+  bottom: 240px;
   left: 48px;
   right: 30px;
 }
@@ -1743,7 +1743,7 @@ textarea::placeholder {
     height: 1000px;
   }
   .hero-copy {
-    top: 215px;
+    bottom: 250px;
   }
   .hero h1 {
     font-size: 49px;
@@ -1934,7 +1934,7 @@ textarea::placeholder {
   .hero-copy {
     left: 24px;
     right: 22px;
-    top: 189px;
+    bottom: 235px;
   }
   .hero-kicker {
     font-size: 7px;
