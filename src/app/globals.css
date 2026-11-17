@@ -352,12 +352,21 @@ p {
 .hero-track-link {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-left: 22px;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 54px;
+  margin-left: 12px;
+  padding: 14px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px);
+  color: #fff;
   font-size: 12px;
-  border-bottom: 1px solid #ffffff70;
-  padding-bottom: 4px;
+  font-weight: 600;
+  transition: background 0.2s ease;
 }
+.hero-track-link:hover { background: rgba(255, 255, 255, 0.28); }
 .hero-metrics {
   position: absolute;
   z-index: 2;
@@ -1956,9 +1965,11 @@ textarea::placeholder {
   .hero-track-link {
     display: flex;
     width: max-content;
-    margin: 15px 0 0 5px;
+    min-width: 210px;
+    min-height: 49px;
+    margin: 12px 0 0;
+    padding: 12px 20px;
     font-size: 11px;
-    gap: 14px;
   }
   .route-area {
     left: 24px;
