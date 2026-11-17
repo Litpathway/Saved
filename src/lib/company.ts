@@ -6,11 +6,7 @@ export const company = {
   whatsapp: "https://wa.me/message/XZ3YJGBGKCMAG1",
   facebook: "https://www.facebook.com/share/1DfyCAj5a9/",
   instagram: "https://www.instagram.com/savelanded_impexp_comltd/",
-  hours: [
-    "Monday–Friday: 09:00–21:00",
-    "Saturday: 09:00–19:00",
-    "Sunday: closed",
-  ],
+  hours: ["Monday–Sunday: 9:00 AM–6:00 PM"],
   contacts: [
     {
       name: "Wolex · OLUYEMI ADEWOLE A.",
@@ -74,7 +70,7 @@ export const companyKnowledge = [
   },
   {
     question: "What are your business opening working hours?",
-    answer: `Our general enquiry hours are ${company.hours.join("; ")}. Office hours may differ; please confirm with the office before visiting.`,
+    answer: `Our business hours are ${company.hours.join("; ")}.`,
   },
 ];
 

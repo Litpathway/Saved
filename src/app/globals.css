@@ -38,6 +38,20 @@ body {
   font-size: 15px;
   line-height: 1.6;
 }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url("/images/company/emblem.png") center / min(420px, 72vw) no-repeat;
+  opacity: 0.045;
+}
+body > main,
+body > footer {
+  position: relative;
+  z-index: 1;
+}
 button,
 input,
 textarea,

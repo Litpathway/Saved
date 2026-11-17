@@ -56,13 +56,10 @@ export default function Page() {
             Chat on WhatsApp ↗
           </a>
           <div className="business-hours">
-            <h3>General enquiry hours</h3>
+            <h3>Business hours</h3>
             {company.hours.map((h) => (
               <p key={h}>{h}</p>
             ))}
-            <p className="form-note">
-              Office hours may vary. Please confirm locally before visiting.
-            </p>
           </div>
           <div className="aside-note">
             Do not send sensitive documents, card details, or passwords through
