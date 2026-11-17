@@ -117,9 +117,13 @@ export function Tracker() {
       )}
       {data && (
         <section className="tracking-result" aria-live="polite">
+          <div className="result-brand">
+            <strong>Savelanded</strong>
+            <span>Shipment tracking</span>
+          </div>
           <div className="result-header">
             <div>
-              <span className="tiny">SHIPMENT {data.trackingNumber}</span>
+              <span className="tiny">MANIFEST / TRACKING NO. {data.trackingNumber}</span>
               <h2>{data.status}</h2>
               {data.estimatedStage && <p className="form-note">Estimated stage based on the shipping schedule</p>}
             </div>
@@ -145,7 +149,7 @@ export function Tracker() {
           </div>
           <div className="result-dates">
             <p>
-              Estimated delivery
+              Estimated arrival
               <strong>
                 {data.estimatedDelivery
                   ? new Date(data.estimatedDelivery).toLocaleDateString(
