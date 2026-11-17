@@ -358,6 +358,28 @@ p {
   border-bottom: 1px solid #ffffff70;
   padding-bottom: 4px;
 }
+.hero-metrics {
+  position: absolute;
+  z-index: 2;
+  left: 48px;
+  right: 48px;
+  bottom: 36px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  padding: 22px 28px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(12px);
+}
+.hero-metrics > div { display: grid; gap: 3px; }
+.hero-metrics strong { color: #fff; font-size: clamp(28px, 3.5vw, 48px); line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.hero-metrics span { color: #fff; font-size: 13px; }
+@media (max-width: 767px) {
+  .hero-metrics { left: 18px; right: 18px; bottom: 24px; gap: 8px; padding: 16px 14px; }
+  .hero-metrics strong { font-size: clamp(22px, 6vw, 32px); }
+  .hero-metrics span { font-size: 10px; line-height: 1.35; }
+}
 .route-area {
   position: absolute;
   z-index: 2;
