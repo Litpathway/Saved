@@ -234,6 +234,9 @@ export function AdminDashboard({
         <Link href="/track">
           Public tracking <ArrowUpRight size={16} />
         </Link>
+        <Link href="/admin/gallery">
+          Manage gallery <ArrowUpRight size={16} />
+        </Link>
       </div>
       {error && (
         <div role="alert" className="error">

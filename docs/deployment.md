@@ -64,3 +64,9 @@ Two deployment requirements were confirmed and fixed:
 The public CA was retrieved over verified HTTPS from `https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt`, as described by Supabase's SSL enforcement documentation. Its subject is Supabase Root 2021 CA, valid through 26 April 2031, with SHA-256 fingerprint `807025AD50D4ED219D2C9C7D299C004F824EB00CF7F65AFEF607D07B72E6CAFA`. Review the provider's current CA guidance when rotating certificates.
 
 Custom-domain DNS, external email delivery, and paid AI provider responses remain separate configuration tasks and were not established by the admin login checks.
+
+## Gallery setup
+
+The public `/gallery` page reads `GalleryItem` records. Apply both gallery migrations before deploying the gallery code. Production uses a restricted database account, so run the reviewed `.local/gallery-production.sql` and `.local/gallery-access-production.sql` in the Supabase SQL Editor; each records its migration checksum. The access migration grants only the app login SELECT, INSERT and DELETE while keeping Supabase browser roles excluded.
+
+In the Vercel project, create a **public** Blob store and connect it to the production environment. Vercel adds `BLOB_READ_WRITE_TOKEN` to the project. Public storage is intentional because visitors must be able to view uploaded media. Only authenticated administrators can request upload tokens, publish metadata, or remove items. The admin UI is at `/admin/gallery`; uploads are limited to JPG, PNG, WebP, AVIF, MP4 and WebM files up to 100 MB. Test a photo upload, video upload, and deletion after deploying. The app stores the file in Blob and its title and description in PostgreSQL. Moving the app to another host requires carrying over the Blob token or moving the media to another durable store.

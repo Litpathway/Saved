@@ -18,6 +18,7 @@ export function Footer() {
           <Link href="/track">Track shipment</Link>
           <Link href="/quote">Request a quote</Link>
           <Link href="/shipping">Shipping information</Link>
+          <Link href="/gallery">Gallery</Link>
         </div>
         <div>
           <h3>Company</h3>

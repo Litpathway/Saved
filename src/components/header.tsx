@@ -28,6 +28,7 @@ export function Header({ hero = false }: { hero?: boolean }) {
           )}
         </div>
         <Link href="/about">About us</Link>
+        <Link href="/gallery">Gallery</Link>
         <Link href="/#process">Our process</Link>
         <Link href="/#faq">FAQs</Link>
         <Link href="/contact">Contact</Link>

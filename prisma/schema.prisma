@@ -86,3 +86,11 @@ model EmailJob {
  attempts Int @default(0)
  createdAt DateTime @default(now())
 }
+model GalleryItem {
+ id String @id @default(cuid())
+ title String
+ description String @default("")
+ kind String
+ url String @unique
+ createdAt DateTime @default(now())
+}
