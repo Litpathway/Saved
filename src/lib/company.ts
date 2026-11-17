@@ -18,7 +18,7 @@ export const company = {
       phone: "+86 182 4854 7224",
     },
     {
-      name: "Star · OLUYEMI TITILAYO A.",
+      name: "Star · OLUYEMI T. A.",
       role: "General manager",
       phone: "+86 157 5799 1458",
     },
