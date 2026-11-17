@@ -10,6 +10,8 @@ import {
   Plus,
   Minus,
   PackageCheck,
+  UsersRound,
+  Star,
 } from "lucide-react";
 import { Offices } from "./offices";
 import { Header } from "./header";
@@ -112,9 +114,9 @@ export function Home() {
           </Link>
         </div>
         <div className="hero-metrics" aria-label="Company metrics">
-          <div><strong>1.5k+</strong><span>Containers offloaded</span></div>
-          <div><strong>5k+</strong><span>Customers satisfied</span></div>
-          <div><strong>97.7%</strong><span>Rating</span></div>
+          <div><Ship aria-hidden="true" /><strong>1.5k+</strong><span>Containers offloaded</span></div>
+          <div><UsersRound aria-hidden="true" /><strong>5k+</strong><span>Customers satisfied</span></div>
+          <div><Star aria-hidden="true" /><strong>97.7%</strong><span>Rating</span></div>
         </div>
       </section>
       <section className="tracking-strip content">
