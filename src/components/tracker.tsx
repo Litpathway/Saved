@@ -20,6 +20,7 @@ type Shipment = {
   status: string;
   estimatedDelivery: string | null;
   updatedAt: string;
+  estimatedStage: boolean;
   milestones: { status: string; note: string; occurredAt: string }[];
 };
 export function Tracker() {
@@ -68,7 +69,7 @@ export function Tracker() {
       >
         <div className="tracking-form-heading">
           <ScanLine size={28} aria-hidden="true" />
-          <label htmlFor="tracking-number">Enter your tracking number</label>
+          <label htmlFor="tracking-number">Enter your manifest or tracking number</label>
         </div>
         <div className="tracking-input">
           <input
@@ -76,7 +77,7 @@ export function Tracker() {
             value={number}
             onChange={(e) => setNumber(e.target.value)}
             required
-            placeholder="SL-XXXXXXXXXXXXXXXX"
+            placeholder="SL0001012 or GZ0000405"
             maxLength={40}
             autoCapitalize="characters"
             aria-describedby={
@@ -101,7 +102,7 @@ export function Tracker() {
           </button>
         </div>
         <p id="tracking-help" className="form-note">
-          Use the unique number supplied by our team. No account required.
+          Yiwu codes start with SL; Guangzhou codes start with GZ. You can also use an older tracking number supplied by our team. No account required.
         </p>
       </form>
       {error && (
@@ -120,6 +121,7 @@ export function Tracker() {
             <div>
               <span className="tiny">SHIPMENT {data.trackingNumber}</span>
               <h2>{data.status}</h2>
+              {data.estimatedStage && <p className="form-note">Estimated stage based on the shipping schedule</p>}
             </div>
             <span className="status-badge">
               <Package size={16} />
@@ -154,7 +156,7 @@ export function Tracker() {
               </strong>
             </p>
             <p>
-              Last recorded update
+              {data.estimatedStage ? "Tracking checked" : "Last recorded update"}
               <strong>
                 {new Date(data.updatedAt).toLocaleString("en-GB", {
                   timeZone: "UTC",
@@ -188,8 +190,9 @@ export function Tracker() {
             ))}
           </ol>
           <p className="form-note">
-            These milestones are recorded by our team. They do not represent
-            live GPS movement. Dates are estimates unless separately confirmed.
+            {data.estimatedStage
+              ? "Container stages are schedule estimates, not confirmed vessel or port events. Contact our team about delays."
+              : "Manual milestones are recorded by our team. They do not represent live GPS movement. Dates are estimates unless separately confirmed."}
           </p>
         </section>
       )}

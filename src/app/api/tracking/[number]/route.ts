@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { trackingSchema } from "@/lib/validation";
 import { error, identity, limit } from "@/lib/security";
+import { containerStage, containerTimeline } from "@/lib/container-tracking";
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ number: string }> },
@@ -19,6 +20,9 @@ export async function GET(
         method: true,
         status: true,
         estimatedDelivery: true,
+        loadedAt: true,
+        automaticTracking: true,
+        manualOverride: true,
         updatedAt: true,
         milestones: {
           select: { status: true, note: true, occurredAt: true },
@@ -27,7 +31,22 @@ export async function GET(
       },
     });
     return shipment
-      ? Response.json(shipment, { headers: { "Cache-Control": "no-store" } })
+      ? Response.json(
+          shipment.automaticTracking && shipment.loadedAt && shipment.estimatedDelivery
+            ? {
+                ...shipment,
+                status: shipment.manualOverride
+                  ? shipment.status
+                  : containerStage(shipment.loadedAt, shipment.estimatedDelivery),
+                updatedAt: shipment.manualOverride ? shipment.updatedAt : new Date(),
+                milestones: shipment.manualOverride
+                  ? [...containerTimeline(shipment.loadedAt, shipment.estimatedDelivery, shipment.milestones.at(-1)?.occurredAt ?? new Date()), ...shipment.milestones]
+                  : containerTimeline(shipment.loadedAt, shipment.estimatedDelivery),
+                estimatedStage: !shipment.manualOverride,
+              }
+            : { ...shipment, estimatedStage: false },
+          { headers: { "Cache-Control": "no-store" } },
+        )
       : error(
           "No shipment found. Check the number supplied by our team, or contact support.",
           404,

@@ -1510,6 +1510,19 @@ textarea::placeholder {
 .admin-panel .form-grid {
   gap: 10px 15px;
 }
+.admin-panel .manual-override {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.5;
+}
+.admin-panel .manual-override input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  flex: none;
+}
 .record-list {
   margin-top: 18px;
   max-height: 700px;

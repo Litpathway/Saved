@@ -3,6 +3,8 @@ import { z } from "zod";
 import { administrator } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { defaultStatuses, shipmentSchema } from "@/lib/validation";
+import { trackingSchema } from "@/lib/validation";
+import { containerStage } from "@/lib/container-tracking";
 import { error, sameOrigin, identity, limit } from "@/lib/security";
 export async function GET(req: Request) {
   try {
@@ -19,7 +21,12 @@ export async function GET(req: Request) {
       ]);
     return Response.json(
       {
-        shipments,
+        shipments: shipments.map((shipment) => ({
+          ...shipment,
+          status: shipment.automaticTracking && !shipment.manualOverride && shipment.loadedAt && shipment.estimatedDelivery
+            ? containerStage(shipment.loadedAt, shipment.estimatedDelivery)
+            : shipment.status,
+        })),
         enquiries,
         knowledge,
         statuses: statuses.length
@@ -48,9 +55,27 @@ export async function POST(req: Request) {
       let id = "";
       let value: unknown;
       if (action === "shipment") {
-        const { note, estimatedDelivery, ...data } = shipmentSchema.parse(body);
+        const {
+          note, estimatedDelivery, loadedAt, trackingNumber,
+          automaticTracking, manualOverride, ...data
+        } = shipmentSchema.parse(body);
+        const manifest = trackingNumber ? trackingSchema.parse(trackingNumber) : "";
+        if (automaticTracking && (!manifest || !loadedAt || !estimatedDelivery || data.method !== "Sea"))
+          throw new Error("Automatic container tracking requires a manifest, sea freight, loading date, and estimated arrival date.");
+        if (automaticTracking && !/^(SL|GZ)\d{7}$/.test(manifest))
+          throw new Error("Use a Yiwu or Guangzhou manifest for automatic tracking.");
+        if (loadedAt && estimatedDelivery && new Date(estimatedDelivery) <= new Date(loadedAt))
+          throw new Error("Estimated arrival must be after the loading date.");
+        if (automaticTracking && !body.id && loadedAt && estimatedDelivery) {
+          const sailingDays = Math.round((Date.parse(estimatedDelivery) - Date.parse(loadedAt)) / 86_400_000);
+          if (sailingDays < 45 || sailingDays > 60)
+            throw new Error("Set an initial estimated arrival 45 to 60 days after loading. You can adjust it later for delays.");
+        }
+        if (manualOverride && (!automaticTracking || !note))
+          throw new Error("A delayed container needs a public correction note.");
         const statuses = await tx.shippingStatus.findMany();
         if (
+          !automaticTracking &&
           !(
             statuses.length ? statuses.map((s) => s.name) : defaultStatuses
           ).includes(data.status)
@@ -58,25 +83,32 @@ export async function POST(req: Request) {
           throw new Error("Invalid status");
         const details = {
           ...data,
+          status: automaticTracking && !manualOverride
+            ? containerStage(new Date(loadedAt!), new Date(estimatedDelivery!))
+            : data.status,
           estimatedDelivery: estimatedDelivery
             ? new Date(estimatedDelivery)
             : null,
+          loadedAt: loadedAt ? new Date(loadedAt) : null,
+          automaticTracking,
+          manualOverride,
         };
         const shipment = body.id
           ? await tx.shipment.update({
               where: { id: z.string().cuid().parse(body.id) },
-              data: details,
+              data: { ...details, ...(manifest ? { trackingNumber: manifest } : {}) },
             })
           : await tx.shipment.create({
               data: {
                 ...details,
-                trackingNumber:
+                trackingNumber: manifest ||
                   "SL-" + randomBytes(8).toString("hex").toUpperCase(),
               },
             });
-        await tx.milestone.create({
-          data: { shipmentId: shipment.id, status: data.status, note },
-        });
+        if (!automaticTracking || manualOverride)
+          await tx.milestone.create({
+            data: { shipmentId: shipment.id, status: data.status, note },
+          });
         id = shipment.id;
         value = shipment;
       } else if (action === "enquiry") {
@@ -131,7 +163,7 @@ export async function POST(req: Request) {
       e instanceof z.ZodError
         ? "Please check the submitted fields."
         : e instanceof Error &&
-            ["Owner role required", "Invalid status"].includes(e.message)
+            ["Owner role required", "Invalid status", "Automatic container tracking requires a manifest, sea freight, loading date, and estimated arrival date.", "Use a Yiwu or Guangzhou manifest for automatic tracking.", "Estimated arrival must be after the loading date.", "Set an initial estimated arrival 45 to 60 days after loading. You can adjust it later for delays.", "A delayed container needs a public correction note."].includes(e.message)
           ? e.message
           : "Unable to save. Check the record and try again.",
       400,

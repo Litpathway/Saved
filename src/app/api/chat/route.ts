@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { companyKnowledge, freightKnowledge } from "@/lib/company";
 import { approvedKnowledge, statusKnowledge } from "@/lib/knowledge";
 import { error, identity, limit, sameOrigin } from "@/lib/security";
+import { containerStage } from "@/lib/container-tracking";
 export async function POST(req: Request) {
   try {
     if (!sameOrigin(req)) return error("Forbidden", 403);
@@ -14,15 +15,15 @@ export async function POST(req: Request) {
     const { message } = z
       .object({ message: z.string().trim().min(1).max(1000) })
       .parse(await req.json());
-    const tracking = message.toUpperCase().match(/\bSL-[A-F0-9]{16}\b/)?.[0];
+    const tracking = message.toUpperCase().match(/\b(?:SL-[A-F0-9]{16}|SL\d{7}|GZ\d{7})\b/)?.[0];
     if (tracking) {
       const s = await db.shipment.findUnique({
         where: { trackingNumber: tracking },
-        select: { status: true, updatedAt: true },
+        select: { status: true, updatedAt: true, automaticTracking: true, manualOverride: true, loadedAt: true, estimatedDelivery: true },
       });
       return Response.json({
         reply: s
-          ? `Shipment ${tracking}: ${s.status}. Last recorded update: ${s.updatedAt.toISOString()}. Open the tracking page for the recorded timeline.`
+          ? `Shipment ${tracking}: ${s.automaticTracking && !s.manualOverride && s.loadedAt && s.estimatedDelivery ? containerStage(s.loadedAt, s.estimatedDelivery) + " (estimated stage)" : s.status}. Open the tracking page for the ${s.automaticTracking ? "estimated container timeline and any corrections" : "recorded timeline"}.`
           : "I could not find that shipment. Please check your tracking number or contact our team.",
         mode: "tracking",
       });

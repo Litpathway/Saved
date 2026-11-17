@@ -48,7 +48,7 @@ const steps = [
   [
     "Follow the progress",
     "Stay informed with recorded shipment milestones.",
-    "Use your unique tracking number to see the latest update entered by our team. Tracking does not represent live GPS movement.",
+    "Use your manifest or tracking number to see the container's estimated stage or the latest update entered by our team. Tracking does not represent live GPS movement.",
   ],
   [
     "Complete the journey",
@@ -59,7 +59,7 @@ const steps = [
 const faqs = [
   [
     "How do I track my shipment?",
-    "Use the tracking number supplied by our team. Enter it on the tracking page to view recorded milestones, the current status, and the latest update.",
+    "Enter the Yiwu or Guangzhou manifest number supplied by our team. Older tracking numbers also work. Container stages are estimated from the shipping schedule, and our team can post corrections.",
   ],
   [
     "How much does shipping cost?",

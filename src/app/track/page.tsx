@@ -12,8 +12,7 @@ export default function Page() {
       <section className="page-intro tracking-intro content">
         <h1>Track your shipment.</h1>
         <p>
-          Enter your tracking number to find your latest recorded update and
-          follow its journey.
+          Enter your Yiwu or Guangzhou manifest number to see the container timeline. Older tracking numbers also work.
         </p>
       </section>
       <section className="content tracker-section">

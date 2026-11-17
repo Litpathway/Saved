@@ -11,6 +11,9 @@ type Shipment = {
   method: string;
   status: string;
   estimatedDelivery: string | null;
+  loadedAt: string | null;
+  automaticTracking: boolean;
+  manualOverride: boolean;
   updatedAt: string;
 };
 type Enquiry = {
@@ -58,6 +61,9 @@ const previewData: Data = {
       method: "Sea",
       status: "In Transit",
       estimatedDelivery: null,
+      loadedAt: null,
+      automaticTracking: false,
+      manualOverride: false,
       updatedAt: "2026-11-15T09:00:00Z",
     },
     {
@@ -68,6 +74,9 @@ const previewData: Data = {
       method: "Air",
       status: "Processing at Warehouse",
       estimatedDelivery: null,
+      loadedAt: null,
+      automaticTracking: false,
+      manualOverride: false,
       updatedAt: "2026-11-15T08:00:00Z",
     },
   ],
@@ -102,6 +111,8 @@ export function AdminDashboard({
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
   const [edit, setEdit] = useState<Shipment | null>(null);
+  const [automatic, setAutomatic] = useState(false);
+  const [override, setOverride] = useState(false);
   const [kb, setKb] = useState<Knowledge | null>(null);
   const [busy, setBusy] = useState(false);
   const load = useCallback(async () => {
@@ -132,6 +143,9 @@ export function AdminDashboard({
         method: values.method,
         status: values.status,
         estimatedDelivery: values.estimatedDelivery || null,
+        loadedAt: values.loadedAt || null,
+        automaticTracking: values.automaticTracking === "true",
+        manualOverride: values.manualOverride === "true",
         updatedAt: new Date().toISOString(),
       };
       setData(
@@ -307,6 +321,8 @@ export function AdminDashboard({
                     type="button"
                     onClick={() => {
                       setEdit(null);
+                      setAutomatic(false);
+                      setOverride(false);
                       editorForm.current?.reset();
                     }}
                     disabled={busy}
@@ -367,7 +383,7 @@ export function AdminDashboard({
                         <p>
                           {s.method} · {s.status}
                         </p>
-                        <button disabled={busy} onClick={() => setEdit(s)}>
+                        <button disabled={busy} onClick={() => { setEdit(s); setAutomatic(s.automaticTracking); setOverride(s.manualOverride); }}>
                           Edit / add milestone
                         </button>{" "}
                         <a
@@ -402,6 +418,8 @@ export function AdminDashboard({
                     await save({ ...values, action: "shipment", id: edit?.id })
                   ) {
                     setEdit(null);
+                    setAutomatic(false);
+                    setOverride(false);
                     form.reset();
                   }
                 }}
@@ -409,18 +427,30 @@ export function AdminDashboard({
                 <h2>{edit ? "Update tracking" : "Create a tracking record"}</h2>
                 {!edit && (
                   <p className="form-note">
-                    A unique tracking number is generated when you save.
+                    Enter a Yiwu or Guangzhou manifest number, or leave it blank to generate a tracking number.
                   </p>
                 )}
                 {edit && (
                   <p className="form-note">
                     {edit.trackingNumber}{" "}
-                    <button type="button" onClick={() => setEdit(null)}>
+                    <button type="button" onClick={() => { setEdit(null); setAutomatic(false); setOverride(false); }}>
                       Cancel editing
                     </button>
                   </p>
                 )}
                 <div className="form-grid">
+                  <label className="full">
+                    Manifest or tracking number
+                    <input
+                      name="trackingNumber"
+                      defaultValue={edit?.trackingNumber ?? ""}
+                      placeholder="SL0001012 or GZ0000405"
+                      maxLength={19}
+                      required={automatic}
+                      autoCapitalize="characters"
+                      spellCheck={false}
+                    />
+                  </label>
                   <label>
                     Origin
                     <input
@@ -452,35 +482,56 @@ export function AdminDashboard({
                     </select>
                   </label>
                   <label>
-                    Status
+                    Tracking updates
+                    <select name="automaticTracking" value={String(automatic)} onChange={(event) => { setAutomatic(event.target.value === "true"); setOverride(false); }}>
+                      <option value="false">Manual milestones</option>
+                      <option value="true">Automatic container stages</option>
+                    </select>
+                  </label>
+                  {automatic && (
+                    <>
+                      <label>
+                        Container loading date
+                        <input type="date" name="loadedAt" required defaultValue={edit?.loadedAt?.slice(0, 10) ?? ""} />
+                      </label>
+                      <label>
+                        Estimated arrival date
+                        <input type="date" name="estimatedDelivery" required defaultValue={edit?.estimatedDelivery?.slice(0, 10) ?? ""} />
+                      </label>
+                      <label className="full manual-override">
+                        <input type="checkbox" name="manualOverride" value="true" checked={override} onChange={(event) => setOverride(event.target.checked)} />
+                        Pause automatic stages for a delay or correction
+                      </label>
+                    </>
+                  )}
+                  <label>
+                    {automatic ? "Correction status (used only when paused)" : "Status"}
                     <select
                       name="status"
-                      defaultValue={edit?.status ?? data.statuses[0]}
+                      defaultValue={edit && (!edit.automaticTracking || edit.manualOverride) ? edit.status : data.statuses[0]}
                     >
                       {data.statuses.map((s) => (
                         <option key={s}>{s}</option>
                       ))}
+                      {automatic && <option value="Delayed">Delayed</option>}
                     </select>
                   </label>
-                  <label className="full">
+                  {!automatic && <label className="full">
                     Estimated delivery date
-                    <input
-                      type="date"
-                      name="estimatedDelivery"
-                      defaultValue={edit?.estimatedDelivery?.slice(0, 10) ?? ""}
-                    />
-                  </label>
+                    <input type="date" name="estimatedDelivery" defaultValue={edit?.estimatedDelivery?.slice(0, 10) ?? ""} />
+                  </label>}
                   <label className="full">
-                    Public milestone note
+                    {override ? "Public correction note" : "Public milestone note"}
                     <textarea
                       name="note"
                       maxLength={500}
+                      required={override}
                       placeholder="Do not include customer names, addresses, or private information."
                     />
                   </label>
                 </div>
                 <p className="form-note">
-                  Saving records a timestamped milestone and an audit entry.
+                  {automatic ? "Automatic stages are estimates: loaded for 3 days, at sea for 30 days, clearing until arrival, then offloading. Pause them to post a delay or correction; resume when ready." : "Saving records a timestamped milestone."} An audit entry is saved.
                   Origin and destination should be cities/regions, never private
                   street addresses.
                 </p>

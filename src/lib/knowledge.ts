@@ -3,7 +3,7 @@ export const approvedKnowledge = [
   {
     question: "How can I track my shipment?",
     answer:
-      "Enter the tracking number supplied by Savelanded Company on the Track Shipment page. Tracking displays updates recorded by our team, rather than live GPS movement.",
+      "Enter the Yiwu or Guangzhou manifest number supplied by Savelanded Company on the Track Shipment page. Older tracking numbers also work. Container stages follow the estimated shipping schedule, and our team can post corrections. This is not live GPS movement.",
   },
   {
     question: "How do I request a shipping quote?",

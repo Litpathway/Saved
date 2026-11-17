@@ -1,0 +1,4 @@
+ALTER TABLE "Shipment"
+ADD COLUMN "loadedAt" TIMESTAMP(3),
+ADD COLUMN "automaticTracking" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN "manualOverride" BOOLEAN NOT NULL DEFAULT false;

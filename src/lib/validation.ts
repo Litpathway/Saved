@@ -33,14 +33,18 @@ export const shipmentSchema = z.object({
   status: text(80),
   note: z.string().trim().max(500).default(""),
   estimatedDelivery: z.union([z.iso.date(), z.literal("")]).optional(),
+  loadedAt: z.union([z.iso.date(), z.literal("")]).optional(),
+  trackingNumber: z.string().trim().default(""),
+  automaticTracking: z.preprocess((v) => v === true || v === "true", z.boolean()),
+  manualOverride: z.preprocess((v) => v === true || v === "true", z.boolean()),
 });
 export const trackingSchema = z
   .string()
   .trim()
   .toUpperCase()
   .regex(
-    /^SL-[A-F0-9]{16}$/,
-    "Enter a tracking number in the format SL- followed by 16 letters or digits.",
+    /^(?:SL-[A-F0-9]{16}|SL\d{7}|GZ\d{7})$/,
+    "Enter a Yiwu code (SL0001012), Guangzhou code (GZ0000405), or a tracking number supplied by our team.",
   );
 export const defaultStatuses = [
   "Shipment Registered",

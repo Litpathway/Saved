@@ -26,6 +26,9 @@ model Shipment {
  method String
  status String
  estimatedDelivery DateTime?
+ loadedAt DateTime?
+ automaticTracking Boolean @default(false)
+ manualOverride Boolean @default(false)
  createdAt DateTime @default(now())
  updatedAt DateTime @updatedAt
  milestones Milestone[]
