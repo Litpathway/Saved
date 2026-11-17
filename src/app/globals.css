@@ -44,8 +44,8 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: url("/images/company/emblem.png") center / min(420px, 72vw) no-repeat;
-  opacity: 0.045;
+  background: url("/images/company/emblem.png") center / min(560px, 88vw) no-repeat;
+  opacity: 0.16;
 }
 body > main,
 body > footer {
@@ -324,6 +324,18 @@ p {
   background:
     linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent 85%),
     linear-gradient(0deg, rgba(0, 0, 0, 0.45), transparent 35%);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 130px;
+  right: 5%;
+  width: min(300px, 32vw);
+  aspect-ratio: 760 / 405;
+  background: url("/images/company/emblem.png") center / contain no-repeat;
+  opacity: 0.34;
+  pointer-events: none;
 }
 .hero-copy {
   position: absolute;
