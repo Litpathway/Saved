@@ -48,7 +48,7 @@ export default function Page() {
           </ArrowLink>
         </div>
       </section>
-      <Offices />
+      <Offices withImages />
       <section className="content company-leadership">
         <h2>Meet the team.</h2>
         <div className="office-grid">
