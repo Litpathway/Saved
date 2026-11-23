@@ -27,8 +27,12 @@ body:has(.reference-home)::before { display: none; }
 .rh-button:hover { background:#0069d4; transform:translateY(-2px); }
 .rh-nav-cta { padding:10px 14px; }
 .rh-menu { display:none; border:0; background:none; }
-.rh-hero { background:linear-gradient(115deg,#05265d 0%,#073b83 65%,#0751a9 100%); color:#fff; }
-.rh-hero-grid { min-height:590px; display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); align-items:center; gap:48px; padding:56px 0; }
+.rh-hero { position:relative; isolation:isolate; overflow:hidden; background:#073b83; color:#fff; }
+.rh-hero::before { position:absolute; z-index:-1; inset:0; content:""; background:linear-gradient(90deg,#05265df5 0%,#05265dd9 38%,#05265d33 100%); }
+.rh-hero-background { z-index:-2; object-fit:cover; object-position:center 45%; }
+.rh-hero-grid { min-height:590px; display:flex; align-items:center; padding:56px 0; }
+.rh-hero-grid>div { max-width:670px; }
+.rh-hero-caption { position:absolute; right:max(24px,calc((100vw - 1120px)/2)); bottom:20px; padding:8px 12px; border-radius:5px; background:#05265dbb; font-size:11px; font-weight:700; }
 .rh-hero-tag { display:inline-block; padding:5px 12px; border:1px solid #ffffff4d; border-radius:30px; background:#ffffff17; font-size:11px; font-weight:800; letter-spacing:.03em; }
 .rh-hero h1 { max-width:670px; margin:24px 0 18px; font-size:clamp(42px,4vw,62px); line-height:1.02; letter-spacing:-.04em; }
 .rh-hero h1 em { display:block; color:#168aff; font-style:normal; }
@@ -3378,9 +3382,6 @@ textarea::placeholder {
   .gallery-manager-thumb { width: 74px; height: 62px; }
 }
 
-.rh-hero-photo { position:relative; width:100%; height:490px; margin:0; overflow:hidden; border-radius:14px; background:#12386a; }
-.rh-hero-photo img { object-fit:cover; object-position:center; }
-.rh-hero-photo figcaption { position:absolute; right:0; bottom:0; padding:8px 14px; background:#05265ddd; color:#fff; font-size:11px; font-weight:700; }
 .rh-process article { padding-top:20px; border-top:2px solid #dce8f5; }
 .rh-process span { color:var(--rh-blue); font-size:12px; font-weight:850; }
 .rh-process h3 { margin:13px 0 8px; }
@@ -3389,7 +3390,6 @@ textarea::placeholder {
 .rh-calculator a { display:inline-flex; align-items:center; gap:7px; margin-top:18px; color:#dcecff; font-weight:800; text-underline-offset:4px; }
 .rh-calculator a:hover { text-decoration:underline; }
 @media (max-width:760px) {
-  .rh-hero-photo { height:300px; }
   .rh-process { gap:24px; }
 }
 

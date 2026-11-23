@@ -20,12 +20,12 @@ export function Home() {
 
   return <div className="reference-home">
     <ReferenceHeader />
-    <section className="rh-hero"><div className="rh-wrap rh-hero-grid"><div>
+    <section className="rh-hero"><Image className="rh-hero-background" src="/images/company/warehouse.jpg" alt="Cargo being loaded at a China warehouse" fill priority sizes="100vw"/><div className="rh-wrap rh-hero-grid"><div>
       <h1>Ship from China to Nigeria with people on the ground in both countries.</h1>
       <p>Sea and air freight, with offices in Yiwu, Guangzhou, and Lagos. Tell us about your cargo and we’ll help you plan the next move.</p>
       <div className="rh-actions"><Link className="rh-button" href="/quote">Request a quote <ArrowRight size={17}/></Link><Link className="rh-button rh-outline" href="/shipping">See shipping options</Link></div>
       <div className="rh-hero-foot">Yiwu <span>·</span> Guangzhou <span>·</span> Lagos</div>
-    </div><figure className="rh-hero-photo"><Image src="/images/company/warehouse.jpg" alt="Savelanded cargo being loaded at a China warehouse" fill priority sizes="(max-width:760px) 100vw, 40vw"/><figcaption>At work in China</figcaption></figure></div></section>
+    </div></div><span className="rh-hero-caption">At work in China</span></section>
 
     <section className="rh-section rh-about"><div className="rh-wrap rh-two"><div><h2>Talk to an office that knows your route.</h2><p>Our teams in China and Nigeria can discuss the cargo, paperwork, shipping method, and delivery arrangements with you.</p><div className="rh-actions"><Link className="rh-button rh-dark" href="/contact">Contact an office <ArrowRight size={16}/></Link><Link className="rh-button rh-light" href="/about">About Savelanded</Link></div></div><div className="rh-office-grid"><article><small>CHINA</small><h3>Yiwu</h3><p>Shipping enquiries and cargo coordination.</p></article><article><small>SOUTH CHINA</small><h3>Guangzhou</h3><p>Cargo and dispatch enquiries.</p></article><article><small>NIGERIA</small><h3>Lagos</h3><p>Shipment updates and delivery questions.</p></article></div></div></section>
 
