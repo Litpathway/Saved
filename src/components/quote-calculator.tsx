@@ -19,10 +19,10 @@ export function QuoteCalculator() {
     document.getElementById("quote-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   return <div className="rh-quote-grid">
-    <section className="rh-quote-card"><small>VOLUME & WEIGHT ESTIMATOR</small><h2>CBM & Air Volumetric Calculator</h2><p>Enter carton dimensions in centimetres and gross weight in kilograms.</p>
+    <section className="rh-quote-card"><h2>Calculate volume and air weight</h2><p>Enter carton dimensions in centimetres and gross weight in kilograms.</p>
       <div className="rh-quote-fields">{["Length (cm)", "Width (cm)", "Height (cm)", "Number of cartons", "Weight per carton (kg)"].map((label,i)=><label key={label}>{label}<input type="number" min="0.01" step="any" inputMode="decimal" value={values[i]} onChange={(e)=>{setValues(values.map((v,j)=>i===j?e.target.value:v));setCopied(false);}} /></label>)}</div>
       <div className="rh-quote-result" aria-live="polite"><div><span>Total sea volume</span><strong>{cbm.toFixed(3)} CBM</strong></div><div><span>Air volumetric weight</span><strong>{volumetric.toFixed(1)} kg</strong></div><div><span>Total gross weight</span><strong>{gross ? `${gross.toFixed(1)} kg` : "—"}</strong></div><p>Air chargeable weight is generally the greater of gross and volumetric weight. Our team confirms the final method and rate.</p><button type="button" disabled={!valid} onClick={copy}>{copied ? "Metrics added to quote form" : "Copy calculated metrics to quote form"}</button></div>
     </section>
-    <section className="rh-quote-card" id="quote-form"><small>DIRECT QUOTATION REQUEST</small><h2>Request a custom shipping quote</h2><p>Complete your shipment details. Our team will review the available options and reply.</p><EnquiryForm kind="QUOTE" metrics={metrics}/></section>
+    <section className="rh-quote-card" id="quote-form"><h2>Request a shipping quote</h2><p>Share your cargo and destination. We’ll review the options and reply.</p><EnquiryForm kind="QUOTE" metrics={metrics}/></section>
   </div>;
 }

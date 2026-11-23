@@ -2657,6 +2657,7 @@ textarea::placeholder {
   flex-shrink: 0;
   background: #000;
 }
+.brand-mark { width:42px; height:42px; display:grid; place-items:center; background:#0065c8; color:#fff; }
 .contact-email {
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -3372,4 +3373,19 @@ textarea::placeholder {
   .gallery-upload { padding: 23px; }
   .gallery-manager-row { gap: 12px; }
   .gallery-manager-thumb { width: 74px; height: 62px; }
+}
+
+.rh-hero-photo { position:relative; width:100%; height:400px; margin:0; overflow:hidden; border-radius:14px; background:#12386a; }
+.rh-hero-photo img { object-fit:cover; object-position:center; }
+.rh-hero-photo figcaption { position:absolute; right:0; bottom:0; padding:8px 14px; background:#05265ddd; color:#fff; font-size:11px; font-weight:700; }
+.rh-process article { padding-top:20px; border-top:2px solid #dce8f5; }
+.rh-process span { color:var(--rh-blue); font-size:12px; font-weight:850; }
+.rh-process h3 { margin:13px 0 8px; }
+.rh-process p { color:#496287; font-size:13px; }
+.rh-calculator h2 { font-size:29px; }
+.rh-calculator a { display:inline-flex; align-items:center; gap:7px; margin-top:18px; color:#dcecff; font-weight:800; text-underline-offset:4px; }
+.rh-calculator a:hover { text-decoration:underline; }
+@media (max-width:760px) {
+  .rh-hero-photo { height:300px; }
+  .rh-process { gap:24px; }
 }

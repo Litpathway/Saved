@@ -1,6 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Box } from "lucide-react";
 export function ArrowLink({
   href,
   children,
@@ -20,13 +19,7 @@ export function ArrowLink({
 export function Brand() {
   return (
     <Link href="/" className="brand">
-      <Image
-        className="brand-art"
-        src="/images/company/brand.png"
-        alt=""
-        width={63}
-        height={42}
-      />
+      <span className="brand-art brand-mark"><Box size={24} aria-hidden="true" /></span>
       <span>
         Savelanded
         <span className="brand-sub">IMPORT & EXPORT COMPANY LIMITED</span>
