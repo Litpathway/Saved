@@ -6,7 +6,7 @@ export function Footer() {
     <footer>
       <div className="footer-top">
         <div>
-          <Brand />
+          <Brand large />
           <p>
             China to Nigeria.
             <br />

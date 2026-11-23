@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, Box } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 export function ArrowLink({
   href,
   children,
@@ -16,14 +17,19 @@ export function ArrowLink({
     </Link>
   );
 }
-export function Brand() {
+export function LogoImage({ large = false }: { large?: boolean }) {
+  return <span className={large ? "site-logo-mark is-large" : "site-logo-mark"}>
+    <Image src="/images/company/logo-straightened.png" alt={large ? "Savelanded Import and Export Company Limited" : ""} width={large ? 300 : 80} height={large ? 273 : 73} />
+  </span>;
+}
+export function Brand({ large = false }: { large?: boolean }) {
   return (
-    <Link href="/" className="brand">
-      <span className="brand-art brand-mark"><Box size={24} aria-hidden="true" /></span>
-      <span>
+    <Link href="/" className={large ? "brand brand-large" : "brand"}>
+      <LogoImage large={large} />
+      {!large && <span>
         Savelanded
         <span className="brand-sub">IMPORT & EXPORT COMPANY LIMITED</span>
-      </span>
+      </span>}
     </Link>
   );
 }

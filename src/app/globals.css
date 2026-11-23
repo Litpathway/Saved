@@ -2657,7 +2657,10 @@ textarea::placeholder {
   flex-shrink: 0;
   background: #000;
 }
-.brand-mark { width:42px; height:42px; display:grid; place-items:center; background:#0065c8; color:#fff; }
+.site-logo-mark { position:relative; display:block; flex:none; width:52px; height:42px; overflow:hidden; background:#fff; }
+.site-logo-mark img { position:absolute; top:-14px; left:-14px; width:80px; height:73px; max-width:none; }
+.site-logo-mark.is-large { width:200px; height:160px; }
+.site-logo-mark.is-large img { top:-52px; left:-50px; width:300px; height:273px; }
 .contact-email {
   overflow-wrap: anywhere;
   word-break: break-word;
