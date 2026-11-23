@@ -19,7 +19,7 @@ export function ArrowLink({
 }
 export function Brand() {
   return (
-    <Link href="/" className="brand" aria-label="Savelanded Company home">
+    <Link href="/" className="brand">
       <Image
         className="brand-art"
         src="/images/company/brand.png"
