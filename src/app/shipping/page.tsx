@@ -1,70 +1,14 @@
-import Image from "next/image";
-import { Ship, Plane } from "lucide-react";
-import { Header } from "@/components/header";
-import { ArrowLink } from "@/components/ui";
-export const metadata = { title: "Sea and air freight" };
+import { ReferenceHeader } from "@/components/reference-header";
+import Link from "next/link";
+import { ArrowRight, Plane, Ship } from "lucide-react";
+export const metadata = { title: "Sea and air freight services" };
 const methods = [
-  {
-    name: "Sea",
-    icon: Ship,
-    image: "/images/company/warehouse.jpg",
-    alt: "Cargo loading photo published by Savelanded",
-    text: "Sea freight from China to Nigeria. Send us your cargo weight, volume, and packaging details for a quotation.",
-    details:
-      "Include the number of cartons or pallets, total weight, and dimensions.",
-  },
-  {
-    name: "Air",
-    icon: Plane,
-    image: "/images/company/guangzhou.jpg",
-    alt: "Cargo handling photo published by Savelanded",
-    text: "Air freight from China to Nigeria. Contact our team with your cargo details and preferred shipping date for a quotation.",
-    details:
-      "Include the contents, dimensions, total weight, and any batteries or restricted materials.",
-  },
+  { id:"air", title:"Air freight from China to Nigeria", icon:Plane, summary:"For cargo where timing matters. Contact our team to confirm available routes, dates, and rates.", points:["Share cargo contents, dimensions, and weight", "Tell us your preferred origin and destination", "Confirm restrictions and required documentation"] },
+  { id:"sea", title:"Sea freight from China to Nigeria", icon:Ship, summary:"For larger shipment volumes. Our team can review the shipping method and arrangements for your cargo.", points:["Share carton or pallet quantities and volume", "Provide weight and packaging details", "Confirm the destination and delivery scope"] },
 ];
 export default function Page() {
-  return (
-    <>
-      <Header />
-      <section className="page-intro content">
-        <h1>
-          China to Nigeria.
-          <br />
-          Sea and air freight.
-        </h1>
-        <p>
-          Contact our offices in Yiwu, Guangzhou, or Lagos for freight rates and
-          shipping arrangements.
-        </p>
-      </section>
-      <section className="method-grid content" aria-label="Freight services">
-        {methods.map((m) => (
-          <article key={m.name} id={m.name.toLowerCase()}>
-            <div
-              className={`freight-photo freight-photo-${m.name.toLowerCase()}`}
-            >
-              <Image
-                src={m.image}
-                alt={m.alt}
-                fill
-                sizes="(max-width: 767px) 100vw, 580px"
-              />
-            </div>
-            <div className="freight-details">
-              <h2>
-                <m.icon size={28} strokeWidth={1.5} aria-hidden="true" />
-                {m.name} freight
-              </h2>
-              <p>{m.text}</p>
-              <p className="small">{m.details}</p>
-              <ArrowLink href="/quote" dark>
-                Request a {m.name.toLowerCase()} freight quote
-              </ArrowLink>
-            </div>
-          </article>
-        ))}
-      </section>
-    </>
-  );
+  return <div className="reference-home rh-subpage"><ReferenceHeader/><section className="rh-subhero"><div className="rh-wrap"><h1>China–Nigeria sea & air freight services</h1><p>Explore our shipping methods and send your cargo details for a quotation confirmed by our team.</p></div></section>
+    <section className="rh-section"><div className="rh-wrap"><div className="rh-service-detail">{methods.map((method,i)=><article id={method.id} key={method.id}><div className="rh-service-top"><span>Service {String(i+1).padStart(2,"0")}</span><small>{method.id.toUpperCase()} FREIGHT</small></div><method.icon size={28} aria-hidden="true"/><h2>{method.title}</h2><p>{method.summary}</p><ul>{method.points.map((point)=><li key={point}>{point}</li>)}</ul><Link className="rh-button rh-dark" href="/quote">Request a quote for this service <ArrowRight size={16}/></Link></article>)}</div></div></section>
+    <section className="rh-section rh-pale"><div className="rh-wrap"><h2>Find the right shipping method</h2><p className="rh-selector-copy">The best option depends on your cargo, timing, volume, and destination. Our team will review these details with you.</p><div className="rh-table-wrap"><table><thead><tr><th>Your priority</th><th>Method to discuss</th><th>Details to prepare</th><th>Next step</th></tr></thead><tbody><tr><td>Time-sensitive shipment</td><th>Air freight</th><td>Contents, weight, dimensions, preferred shipping date</td><td><Link href="/quote">Request rate →</Link></td></tr><tr><td>Larger cargo volume</td><th>Sea freight</th><td>Contents, carton count, volume, weight, destination</td><td><Link href="/quote">Request rate →</Link></td></tr><tr><td>Already shipped</td><th>Shipment tracking</th><td>Your manifest or tracking number</td><td><Link href="/track">Track cargo →</Link></td></tr></tbody></table></div></div></section>
+    <section className="rh-subcta"><div className="rh-wrap"><div><h2>Ready to plan your shipment?</h2><p>Send your cargo details for a reviewed sea or air freight quote.</p></div><Link className="rh-button" href="/quote">Request a quote <ArrowRight size={16}/></Link></div></section></div>;
 }

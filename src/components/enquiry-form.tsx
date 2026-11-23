@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ArrowUpRight, CheckCircle2, Loader2 } from "lucide-react";
-export function EnquiryForm({ kind }: { kind: "QUOTE" | "CONTACT" }) {
+export function EnquiryForm({ kind, metrics }: { kind: "QUOTE" | "CONTACT"; metrics?: { weight: string; dimensions: string } }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<{
@@ -116,12 +116,14 @@ export function EnquiryForm({ kind }: { kind: "QUOTE" | "CONTACT" }) {
             </label>
             <label>
               Weight, if known
-              <input name="weight" maxLength={80} placeholder="e.g. 250 kg" />
+              <input name="weight" key={metrics?.weight} defaultValue={metrics?.weight} maxLength={80} placeholder="e.g. 250 kg" />
             </label>
             <label>
               Dimensions, if known
               <input
                 name="dimensions"
+                key={metrics?.dimensions}
+                defaultValue={metrics?.dimensions}
                 maxLength={100}
                 placeholder="Length × width × height, with units"
               />
